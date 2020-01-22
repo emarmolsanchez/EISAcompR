@@ -60,7 +60,7 @@ Once the function has run, an EISACompR object will be stored at predefined obje
 &nbsp;
 &nbsp;
 
-# writeEISAgtfs
+## writeEISAgtfs
 
 Users can export the exon/intron annotation files in GTF format by using the ad-hoc writeEISAgtfs function.
 
