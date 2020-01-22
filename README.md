@@ -7,7 +7,14 @@ EISACompR is a comprehensive and user-friendly pipeline for performing Exon/Intr
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+# Index
 
+- [Prerequisites](https://github.com/emarmolsanchez/EISACompR/#prerequisites)
+- [Functions](https://github.com/emarmolsanchez/EISACompR/#functions)
+    - [makeEISAgtfs](https://github.com/emarmolsanchez/EISACompR/#makeeisagtfs)
+    - [writeEISAgtfs](https://github.com/emarmolsanchez/EISACompR/#writeeisagtfs)
+    - [getEISAcounts](https://github.com/emarmolsanchez/EISACompR/#geteisacounts)
+    - [getEISAcomp](https://github.com/emarmolsanchez/EISACompR/#geteisacomp)
 
 
 
