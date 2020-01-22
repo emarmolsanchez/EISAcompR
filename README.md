@@ -36,9 +36,22 @@ The following R libraries are required for running the EISACompR pipeline:
 
 The next R functions are implemented for running EISA on a set of genes from RNA-Seq data or any other quantification method able to discriminate between exonic and intronic genomic ranges. All required steps are thoroughly explained and exemplified as follows:
 
+&nbsp;
 
 ## makeEISAgtfs
 
+The first EISACompR function aims to build custom annotation files in GTF format for late reads quantification spanning either exoninc or intronic genomic ranges. Reference GTF annotation for your species of interest is needed in order to generate the corresponding exonic/intronic regions for running EISA analysis.
+
+This function requires 2 arguments:
+
++ PATH to reference GTF annotation file.
++ Exon junction boundary correction threshold (10 bp by default).
+
+Example of usage:
+
+```r
+
+makeEISAgtfs(annotFile="PATH_to_GTF", boundaryFix=10)
 
 
 
