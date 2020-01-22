@@ -79,8 +79,28 @@ writeEISAgtfs(GTFs, "~/")
 
 This command will create two files called `exons.gtf` and `introns.gtf` at `HOME` PATH, which can be used as canonical GTF annotation for gene quantification using any preferred quantifier tool able to process GTF files as input annotation format.
 
+&nbsp;
+&nbsp;
 
+## getEISAcounts
 
+This function allows users to quantify the level of expression of their aligned reads by making use of custom-created exonic/intronic GTF annotation files. The featureCounts built-in function from Rsubread package is used for such purpose. Users may optionally decide to use any other preferred quantification pipeline provided the use of exonic/intronic GTF annotation as a reference.
+
+This function requires five arguments:
+
++ A character vector giving PATH to input BAM/SAM files containing read mapping results.
++ PATH to exonic/intronic GTF annotation file.
++ Strandness (either 0 = unstranded, 1 = stranded forward or 2 = stranded reversed).
++ Number of available threads for parallel computation.
++ Boolean specifying if input sequencing data is of type Paired-end (TRUE/FALSE).
+
+Example of usage:
+
+```r
+
+counts <- getEISAcounts(files=vector_of_input_BAM/SAM, annotFile="PATH_to_exon/intron_GTFs", strandness=0/1/2, nthreads=1, PairedEnd=TRUE)
+
+```
 
 
 
