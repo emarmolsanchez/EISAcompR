@@ -51,8 +51,33 @@ Example of usage:
 
 ```r
 
-makeEISAgtfs(annotFile="PATH_to_GTF", boundaryFix=10)
+GTFs <- makeEISAgtfs(annotFile="PATH_to_GTF", boundaryFix=10)
 
+```
+
+Once the function has run, an EISACompR object will be stored at predefined object `GTFs`, storing both exonic and intronic GTFs generated after splitting the reference GTF provided. Intronic ranges overlapping any other exonic regions from alternative splicing isoforms or other annotated genes spanning the same region will be removed. Additionally, exonic ranges will be enlarged by 10 bp (or any other bp threshold established by the user), in order to avoid counting reads mapping to exon/intron junctions as intronic.
+
+&nbsp;
+&nbsp;
+
+# writeEISAgtfs
+
+Users can export the exon/intron annotation files in GTF format by using the ad-hoc writeEISAgtfs function.
+
+This function requires two arguments:
+
++ EISACompR object previously stored with exon/intron split GTFs.
++ PATH to desired output.
+
+Example of usage:
+
+```r
+
+writeEISAgtfs(GTFs, "~/")
+
+```
+
+This command will create two files called `exons.gtf` and `introns.gtf` at `HOME` PATH, which can be used as canonical GTF annotation for gene quantification using any preferred quantifier tool able to process GTF files as input annotation format.
 
 
 
