@@ -146,6 +146,9 @@ Once the function has run, an object ot type `EISACompR` will be created. This o
 
 For transcriptional (Tc) and post-transcriptional (PTc) components, generally, the higher their absolute values (either showing negative or positive regulatory influence), the more relevant regulatory effects could be inferred. Please be aware that the abscence of significance in PTc component might indicate the presence of mixed transcriptional and post-transcriptional componentes affecting the same gene with PTc component showing significant interaction with any other transcriptional (Tc) influence detected at intronic levels. Users should compare canonical differential expression (DE) results and significance for their genes of interest, as well as their Tc and PTc components, in order to extract meaningfull information about the putative regulatory influence affecting their genes of interest.
 
+&nbsp;
+&nbsp;
+
 
 -------------------------------------------------------------------------------------------------------------------------------
 
