@@ -98,7 +98,8 @@ Example of usage:
 
 ```r
 
-counts <- getEISAcounts(files=vector_of_input_BAM/SAM, annotFile="PATH_to_exon/intron_GTFs", strandness=0/1/2, nthreads=1, PairedEnd=TRUE)
+exon_counts <- getEISAcounts(files=vector_of_input_BAM/SAM, annotFile="PATH_to_exon_GTF", strandness=0/1/2, nthreads=1, PairedEnd=TRUE)
+intron_counts <- getEISAcounts(files=vector_of_input_BAM/SAM, annotFile="PATH_to_intron_GTF", strandness=0/1/2, nthreads=1, PairedEnd=TRUE)
 
 ```
 
@@ -109,19 +110,47 @@ Once the function has run, it will create a raw count matrix stored at `counts` 
 
 ## getEISAcomp
 
+This is the main function used to calculate exon/intron split estimates and compute transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated).
 
+This function requires seven arguments:
 
++ Exonic raw counts (genes in rows and samples in columns).
++ Intronic raw counts (genes in rows and samples in columns).
++ Design matrix with two columns (1st = sample names; 2nd = group assignment).
++ Boolean to compute optional outlier capping correction or not (TRUE/FALSE).
++ Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
++ Percentage of samples showing minimum expression threshold for filtering (50% by default).
++ counts-per-million (CPM) expression threshold for filtering lowly expressed genes (1 CPM by default).
 
+Example of usage:
 
+```r
 
+eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, capOut=TRUE, filterExpr=TRUE, percent=0.5, cpm=1)
 
+```
 
+Once the function has run, an object ot type `EISACompR` will be created. This object will contain four tables:
 
++ resTc = EISA for the transcriptional component effect on each analyzed gene.
++ resPTc = EISA for the post-transcriptional component effect on each analyzed gene.
++ Expr_Int = Normalized log2 expression matrix for Intronic counts.
++ Expr_Ex = Normalized log2 expression matrix for Exonic counts.
 
-
+For transcriptional (Tc) and post-transcriptional (PTc) components, generally, the higher their absolute values (either showing negative or positive regulatory influence), the more relevant regulatory effects could be inferred. Please be aware that the abscence of significance in PTc component might indicate the presence of mixed transcriptional and post-transcriptional componentes affecting the same gene with PTc component showing significant interaction with any other transcriptional (Tc) influence detected at intronic levels. Users should compare canonical differential expression (DE) results and significance for their genes of interest, as well as their Tc and PTc components, in order to extract meaningfull information about the putative regulatory influence affecting their genes of interest.
 
 
 -------------------------------------------------------------------------------------------------------------------------------
+
+# References
+
+1. [Gaidatzis D et al. (2015) Analysis of intronic and exonic reads in RNA-seq data characterizes transcriptional and post-transcriptional regulation. *Nature Biotechnology*, 33, 722–729.]
+
+2. [Lawrence M et al. (2013) Software for computing and annotating genomic ranges. *PLoS Computational Biology*, 9, e1003118.]
+
+3. [Liao Y et al. (2019) The R package Rsubread is easier, faster, cheaper and better for alignment and quantification of RNA sequencing reads. *Nucleid Acids Research*, 47, e47.]
+
+4. [Robinson MD et al. (2010) edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. *Bioinformatics*, 26, 139–140.]
 
 [GenomicFeatures]:https://bioconductor.org/packages/release/bioc/html/GenomicFeatures.html
 [IRanges]:https://bioconductor.org/packages/release/bioc/html/IRanges.html
@@ -133,3 +162,8 @@ Once the function has run, it will create a raw count matrix stored at `counts` 
 [2]:https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003118
 [3]:https://academic.oup.com/nar/article/47/8/e47/5345150
 [4]:https://academic.oup.com/bioinformatics/article/26/1/139/182458
+
+[Gaidatzis D et al. (2015) Analysis of intronic and exonic reads in RNA-seq data characterizes transcriptional and post-transcriptional regulation. *Nature Biotechnology*, 33, 722–729]:https://www.nature.com/articles/nbt.3269
+[Lawrence M et al. (2013) Software for Computing and Annotating Genomic Ranges. *PLoS Computational Biology*, 9, e1003118.]:https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003118
+[Liao Y et al. (2019) The R package Rsubread is easier, faster, cheaper and better for alignment and quantification of RNA sequencing reads. *Nucleid Acids Research*, 47, e47.]:https://academic.oup.com/nar/article/47/8/e47/5345150
+[Robinson MD et al. (2010) edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. *Bioinformatics*, 26, 139–140.]:https://academic.oup.com/bioinformatics/article/26/1/139/182458
