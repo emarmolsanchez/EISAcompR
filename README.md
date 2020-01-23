@@ -102,6 +102,14 @@ counts <- getEISAcounts(files=vector_of_input_BAM/SAM, annotFile="PATH_to_exon/i
 
 ```
 
+Once the function has run, it will create a raw count matrix stored at `counts` object with quantification estimates of each mapped read to the corresponding exonic/intronic regions and gene assignment.
+
+&nbsp;
+&nbsp;
+
+## getEISAcomp
+
+
 
 
 
