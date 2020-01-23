@@ -173,7 +173,7 @@ For transcriptional (Tc) and post-transcriptional (PTc) components, generally, t
 [3]:https://academic.oup.com/nar/article/47/8/e47/5345150
 [4]:https://academic.oup.com/bioinformatics/article/26/1/139/182458
 
-[Gaidatzis D et al. (2015) Analysis of intronic and exonic reads in RNA-seq data characterizes transcriptional and post-transcriptional regulation. *Nature Biotechnology*, 33, 722–729]:https://www.nature.com/articles/nbt.3269
+[Gaidatzis D et al. (2015) Analysis of intronic and exonic reads in RNA-seq data characterizes transcriptional and post-transcriptional regulation. *Nature Biotechnology*, 33, 722–729.]:https://www.nature.com/articles/nbt.3269
 [Lawrence M et al. (2013) Software for Computing and Annotating Genomic Ranges. *PLoS Computational Biology*, 9, e1003118.]:https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003118
 [Liao Y et al. (2019) The R package Rsubread is easier, faster, cheaper and better for alignment and quantification of RNA sequencing reads. *Nucleid Acids Research*, 47, e47.]:https://academic.oup.com/nar/article/47/8/e47/5345150
 [Robinson MD et al. (2010) edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. *Bioinformatics*, 26, 139–140.]:https://academic.oup.com/bioinformatics/article/26/1/139/182458
