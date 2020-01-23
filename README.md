@@ -54,6 +54,7 @@ Example of usage:
 GTFs <- makeEISAgtfs(annotFile="PATH_to_GTF", boundaryFix=10)
 
 ```
+&nbsp;
 
 Once the function has run, an EISACompR object will be stored at predefined object `GTFs`, storing both exonic and intronic GTFs generated after splitting the reference GTF provided. Intronic ranges overlapping any other exonic regions from alternative splicing isoforms or other annotated genes spanning the same region will be removed. Additionally, exonic ranges will be enlarged by 10 bp (or any other bp threshold established by the user), in order to avoid counting reads mapping to exon/intron junctions as intronic.
 
@@ -76,6 +77,7 @@ Example of usage:
 writeEISAgtfs(GTFs, "~/")
 
 ```
+&nbsp;
 
 This command will create two files called `exons.gtf` and `introns.gtf` at `HOME` PATH, which can be used as canonical GTF annotation for gene quantification using any preferred quantifier tool able to process GTF files as input annotation format.
 
@@ -102,6 +104,7 @@ exon_counts <- getEISAcounts(files=vector_of_input_BAM/SAM, annotFile="PATH_to_e
 intron_counts <- getEISAcounts(files=vector_of_input_BAM/SAM, annotFile="PATH_to_intron_GTF", strandness=0/1/2, nthreads=1, PairedEnd=TRUE)
 
 ```
+&nbsp;
 
 Once the function has run, it will create a raw count matrix stored at `counts` object with quantification estimates of each mapped read to the corresponding exonic/intronic regions and gene assignment.
 
@@ -129,6 +132,7 @@ Example of usage:
 eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, capOut=TRUE, filterExpr=TRUE, percent=0.5, cpm=1)
 
 ```
+&nbsp;
 
 Once the function has run, an object ot type `EISACompR` will be created. This object will contain four tables:
 
@@ -136,6 +140,9 @@ Once the function has run, an object ot type `EISACompR` will be created. This o
 + resPTc = EISA for the post-transcriptional component effect on each analyzed gene.
 + Expr_Int = Normalized log2 expression matrix for Intronic counts.
 + Expr_Ex = Normalized log2 expression matrix for Exonic counts.
+
+&nbsp;
+&nbsp;
 
 For transcriptional (Tc) and post-transcriptional (PTc) components, generally, the higher their absolute values (either showing negative or positive regulatory influence), the more relevant regulatory effects could be inferred. Please be aware that the abscence of significance in PTc component might indicate the presence of mixed transcriptional and post-transcriptional componentes affecting the same gene with PTc component showing significant interaction with any other transcriptional (Tc) influence detected at intronic levels. Users should compare canonical differential expression (DE) results and significance for their genes of interest, as well as their Tc and PTc components, in order to extract meaningfull information about the putative regulatory influence affecting their genes of interest.
 
