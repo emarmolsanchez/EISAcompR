@@ -113,7 +113,7 @@ Once the function has run, it will create a raw count matrix stored at `counts` 
 
 ## getEISAcomp
 
-This is the main function used to calculate exon/intron split estimates and compute transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated).
+This is the main function used to calculate exon/intron split estimates and compute transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated) and includes the possibility of user-defined batch correction. Users must prepare their exon/intron counts, design and batch (optional) matrices including data for same number of selected samples. 
 
 This function requires seven arguments:
 
@@ -122,6 +122,7 @@ This function requires seven arguments:
 + Design matrix with two columns (1st = sample names; 2nd = group assignment).
 + Boolean to compute optional outlier capping correction or not (TRUE/FALSE).
 + Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
++ Batch matrix with as much columns as additional batch effects to be included for correction (optional)
 + Percentage of samples showing minimum expression threshold for filtering (50% by default).
 + counts-per-million (CPM) expression threshold for filtering lowly expressed genes (1 CPM by default).
 
@@ -129,7 +130,7 @@ Example of usage:
 
 ```r
 
-eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, capOut=TRUE, filterExpr=TRUE, percent=0.5, cpm=1)
+eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, capOut=FALSE, filterExpr=TRUE, batch=batch_matrix, percent=0.5, cpm=1)
 
 ```
 &nbsp;
@@ -144,11 +145,19 @@ Once the function has run, an object ot type `EISACompR` will be created. This o
 &nbsp;
 &nbsp;
 
-For transcriptional (Tc) and post-transcriptional (PTc) components, generally, the higher their absolute values (either showing negative or positive regulatory influence), the more relevant regulatory effects could be inferred. Please be aware that the abscence of significance in PTc component might indicate the presence of mixed transcriptional and post-transcriptional componentes affecting the same gene with PTc component showing significant interaction with any other transcriptional (Tc) influence detected at intronic levels. Users should compare canonical differential expression (DE) results and significance for their genes of interest, as well as their Tc and PTc components, in order to extract meaningfull information about the putative regulatory influence affecting their genes of interest.
+For transcriptional (Tc) and post-transcriptional (PTc) components, generally, the higher their absolute values (either showing negative or positive regulatory influence), the more relevant regulatory effects could be inferred. Please be aware that the abscence of significance in PTc component might indicate the presence of mixed transcriptional and post-transcriptional componentes affecting the same gene. Any PTc component showing significant interaction with any other transcriptional (Tc) influence detected at intronic levels will be shown as not significant. Users should compare canonical differential expression (DE) results and significance for their genes of interest, as well as their Tc and PTc components, in order to extract meaningfull information about the putative regulatory influence affecting their genes of interest.
 
 &nbsp;
 &nbsp;
 
+Output interpretation:
+
++ Significant PTc + Significant DE = Gene showing Post-transcriptional regulatory signal
++ Significant Tc + Significant DE = Gene showing Transcriptional regulatory signal
++ Non-significant PTc + Significant Tc + Significant DE = Gene showing mixed Transcriptional and Post-transcriptional regulatory signal
+
+&nbsp;
+&nbsp;
 
 -------------------------------------------------------------------------------------------------------------------------------
 
