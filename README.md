@@ -119,7 +119,7 @@ This function requires seven arguments:
 
 + Exonic raw counts (genes in rows and samples in columns).
 + Intronic raw counts (genes in rows and samples in columns).
-+ Design matrix (1st = sample names; 2nd = group assignment + any other additional columns with batch effects).
++ Design matrix (1st = sample names; 2nd = group assignment + optionally any other additional columns with batch effects).
 + Boolean to compute optional outlier capping correction or not (TRUE/FALSE).
 + Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
 + Percentage of samples showing minimum expression threshold for filtering (50% by default).
