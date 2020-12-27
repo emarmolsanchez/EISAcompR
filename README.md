@@ -113,16 +113,15 @@ Once the function has run, it will create a raw count matrix stored at `counts` 
 
 ## getEISAcomp
 
-This is the main function used to calculate exon/intron split estimates and compute transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated) and includes the possibility of user-defined batch correction. Users must prepare their exon/intron counts, design and batch (optional) matrices including data for same number of selected samples. 
+This is the main function used to calculate exon/intron split estimates and compute transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated) and includes the possibility of user-defined batch correction. Users must prepare their exon/intron counts, design and batch (optional) matrices including data for same number of selected samples. In the event that design matrix includes additional columns other than sample name (1st) and group assignment (2nd), these will be considered as independent batch effects. If no batch correction needs to be implemented, please only use a two-column design matrix.
 
 This function requires seven arguments:
 
 + Exonic raw counts (genes in rows and samples in columns).
 + Intronic raw counts (genes in rows and samples in columns).
-+ Design matrix with two columns (1st = sample names; 2nd = group assignment).
++ Design matrix (1st = sample names; 2nd = group assignment + any other additional columns with batch effects).
 + Boolean to compute optional outlier capping correction or not (TRUE/FALSE).
 + Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
-+ Batch matrix with as much columns as additional batch effects to be included for correction (optional)
 + Percentage of samples showing minimum expression threshold for filtering (50% by default).
 + counts-per-million (CPM) expression threshold for filtering lowly expressed genes (1 CPM by default).
 
@@ -130,7 +129,7 @@ Example of usage:
 
 ```r
 
-eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, capOut=FALSE, filterExpr=TRUE, batch=batch_matrix, percent=0.5, cpm=1)
+eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, capOut=FALSE, filterExpr=TRUE, percent=0.5, cpm=1)
 
 ```
 &nbsp;
