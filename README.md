@@ -1,6 +1,6 @@
-# EISACompR
+# EISAcompR
 
-EISACompR is a comprehensive and user-friendly pipeline for performing Exon/Intron Split Analysis (EISA) using RNA-Seq data, as reported by Gaidatzis *et al.* (2015) [[1]]. This document is intended to give a technical supplementary description about how to run the EISACompR pipeline through a detailed explanation of all the modules that form part of this tool.
+EISAcompR is a comprehensive and user-friendly pipeline for performing Exon/Intron Split Analysis (EISA) using RNA-Seq data, as reported by Gaidatzis *et al.* (2015) [[1]]. This document is intended to give a technical supplementary description about how to run the EISAcompR pipeline through a detailed explanation of all the modules that form part of this tool.
 
 &nbsp;
 &nbsp;
@@ -56,7 +56,7 @@ GTFs <- makeEISAgtfs(annotFile="PATH_to_GTF", boundaryFix=10)
 ```
 &nbsp;
 
-Once the function has run, an EISACompR object will be stored at predefined object `GTFs`, storing both exonic and intronic GTFs generated after splitting the reference GTF provided. Intronic ranges overlapping any other exonic regions from alternative splicing isoforms or other annotated genes spanning the same region will be removed. Additionally, exonic ranges will be enlarged by 10 bp (or any other bp threshold established by the user), in order to avoid counting reads mapping to exon/intron junctions as intronic.
+Once the function has run, an EISAcompR object will be stored at predefined object `GTFs`, storing both exonic and intronic GTFs generated after splitting the reference GTF provided. Intronic ranges overlapping any other exonic regions from alternative splicing isoforms or other annotated genes spanning the same region will be removed. Additionally, exonic ranges will be enlarged by 10 bp (or any other bp threshold established by the user), in order to avoid counting reads mapping to exon/intron junctions as intronic.
 
 &nbsp;
 &nbsp;
