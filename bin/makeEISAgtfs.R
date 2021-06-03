@@ -60,7 +60,7 @@ makeEISAgtfs <- function(annotFile, boundaryFix=10){
     }), 1, paste, collapse="; "), ";", sep=""))
   }
   
-  GR2gtf <- function(regions, filename, feature.type, src="EISACompR",
+  GR2gtf <- function(regions, filename, feature.type, src="EISAcompR",
                      score=".", phase=".", attributes=NULL, ...) {
     
     strnd = as.character(strand(regions))
@@ -149,9 +149,9 @@ makeEISAgtfs <- function(annotFile, boundaryFix=10){
   introns <- introns[-grep("gene_id c", introns$V9), ]
   
   ## Store results in object
-  setClass("EISACompR",
+  setClass("EISAcompR",
            slots = list(exonsGTF = "data.frame", intronsGTF = "data.frame"))
-  results <- new("EISACompR", exonsGTF = exons, intronsGTF = introns)
+  results <- new("EISAcompR", exonsGTF = exons, intronsGTF = introns)
   
   message("OK")
   
