@@ -14,7 +14,7 @@ EISACompR is a comprehensive and user-friendly pipeline for performing Exon/Intr
     - [makeEISAgtfs](https://github.com/emarmolsanchez/EISACompR/#makeeisagtfs)
     - [writeEISAgtfs](https://github.com/emarmolsanchez/EISACompR/#writeeisagtfs)
     - [getEISAcounts](https://github.com/emarmolsanchez/EISACompR/#geteisacounts)
-    - [getEISAcomp](https://github.com/emarmolsanchez/EISACompR/#geteisacomp)
+    - [getEISAcompR](https://github.com/emarmolsanchez/EISACompR/#geteisacomp)
 
 &nbsp;
 &nbsp;
@@ -111,16 +111,15 @@ Once the function has run, it will create a raw count matrix stored at `counts` 
 &nbsp;
 &nbsp;
 
-## getEISAcomp
+## getEISAcompR
 
-This is the main function used to calculate exon/intron split estimates and compute transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated) and includes the possibility of user-defined batch correction. Users must prepare their exon/intron counts, design and batch (optional) matrices including data for same number of selected samples. In the event that design matrix includes additional columns other than sample name (1st) and group assignment (2nd), these will be considered as independent batch effects. If no batch correction needs to be implemented, please only use a two-column design matrix.
+This is the main function used to calculate exon/intron split estimates and compute transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated) and includes the possibility of user-defined batch correction. Users must prepare their exon/intron counts, design and batch (optional) matrices including data for same number of selected samples. In the event that design matrix includes an additional batch effect apart from sample name (1st) and group assignment (2nd), it will be considered as independent batch effect. If no batch correction needs to be implemented, please only use a two-column design matrix.
 
 This function requires seven arguments:
 
 + Exonic raw counts (genes in rows and samples in columns).
 + Intronic raw counts (genes in rows and samples in columns).
-+ Design matrix (1st = sample names; 2nd = group assignment + optionally any other additional columns with batch effects).
-+ Boolean to compute optional outlier capping correction or not (TRUE/FALSE).
++ Design matrix (1st = sample names; 2nd = group assignment + optionally one additional column with batch effect).
 + Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
 + Percentage of samples showing minimum expression threshold for filtering (50% by default).
 + counts-per-million (CPM) expression threshold for filtering lowly expressed genes (1 CPM by default).
@@ -129,13 +128,14 @@ Example of usage:
 
 ```r
 
-eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, capOut=FALSE, filterExpr=TRUE, percent=0.5, cpm=1)
+eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, filterExpr=TRUE, percent=0.5, cpm=1)
 
 ```
 &nbsp;
 
-Once the function has run, an object ot type `EISACompR` will be created. This object will contain four tables:
+Once the function has run, an object ot type `EISAcompR` will be created. This object will contain four tables:
 
++ resDE = Differential Expression analysis for exonic counts using glmQLFTest from [edgeR] package.
 + resTc = EISA for the transcriptional component effect on each analyzed gene.
 + resPTc = EISA for the post-transcriptional component effect on each analyzed gene.
 + Expr_Int = Normalized log2 expression matrix for Intronic counts.
