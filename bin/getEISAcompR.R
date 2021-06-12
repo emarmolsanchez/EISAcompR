@@ -175,7 +175,7 @@ getEISAcompR <- function(exons, introns, design,
     colnames(merged_PTc) <- c("log2FC", "DiffEx", "PTc", "Pvalue", "FDR")
     
     merged_Tc <- merge(merged_Diff, introns_results$table, by="row.names")
-    merged_Tc <- data.frame(cbind(merged_Tc$logFC, merged_Tc$DiffEx, 
+    merged_Tc <- data.frame(cbind(merged_Tc$logFC, merged_Tc$DiffInt, 
                                       scale(merged_Tc$DiffInt),
                                       merged_Tc$PValue, merged_Tc$FDR))
     rownames(merged_Tc) <- rownames(merged_Diff)
@@ -342,7 +342,7 @@ getEISAcompR <- function(exons, introns, design,
     colnames(merged_PTc) <- c("log2FC", "DiffEx", "PTc", "Pvalue", "FDR")
     
     merged_Tc <- merge(merged_Diff, introns_results$table, by="row.names")
-    merged_Tc <- data.frame(cbind(merged_Tc$logFC, merged_Tc$DiffEx, 
+    merged_Tc <- data.frame(cbind(merged_Tc$logFC, merged_Tc$DiffInt, 
                                   scale(merged_Tc$DiffInt),
                                   merged_Tc$PValue, merged_Tc$FDR))
     rownames(merged_Tc) <- rownames(merged_Diff)
