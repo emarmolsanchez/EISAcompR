@@ -113,7 +113,7 @@ getEISAcompR <- function(exons, introns, design,
       exons_dge <- DGEList(counts=merged_ei, genes=rownames(merged_ei))
       exons_dge <- calcNormFactors(exons_dge, method="TMM")
       exons_dge <- estimateDisp(exons_dge, designf, robust=T)
-      exons_fit <- glmQLFit(exons_dge, designf)
+      exons_fit <- glmQLFit(exons_dge, designf, robust=T)
       exons_qlf <- glmQLFTest(exons_fit)
       exons_results <- topTags(exons_qlf, n=nrow(exons_dge))
       
@@ -121,7 +121,7 @@ getEISAcompR <- function(exons, introns, design,
       introns_dge <- DGEList(counts=intronsf, genes=rownames(intronsf))
       introns_dge <- calcNormFactors(introns_dge, method="TMM")
       introns_dge <- estimateDisp(introns_dge, designf2, robust=T)
-      introns_fit <- glmQLFit(introns_dge, designf2)
+      introns_fit <- glmQLFit(introns_dge, designf2, robust=T)
       introns_qlf <- glmQLFTest(introns_fit)
       introns_results <- topTags(introns_qlf, n=nrow(introns_dge))
       
@@ -129,7 +129,7 @@ getEISAcompR <- function(exons, introns, design,
       DE_dge <- DGEList(counts=exonsf, genes=rownames(exonsf))
       DE_dge <- calcNormFactors(DE_dge, method="TMM")
       DE_dge <- estimateDisp(DE_dge, designf3, robust=T)
-      DE_fit <- glmQLFit(DE_dge, designf3)
+      DE_fit <- glmQLFit(DE_dge, designf3, robust=T)
       DE_qlf <- glmQLFTest(DE_fit)
       DE_results <- topTags(DE_qlf, n=nrow(DE_dge))
       
@@ -141,7 +141,7 @@ getEISAcompR <- function(exons, introns, design,
       exons_dge <- DGEList(counts=merged_ei, genes=rownames(merged_ei))
       exons_dge <- calcNormFactors(exons_dge, method="TMM")
       exons_dge <- estimateDisp(exons_dge, designf, robust=T)
-      exons_fit <- glmFit(exons_dge, designf)
+      exons_fit <- glmFit(exons_dge, designf, robust=T)
       exons_qlf <- glmLRT(exons_fit)
       exons_results <- topTags(exons_qlf, n=nrow(exons_dge))
       
@@ -149,7 +149,7 @@ getEISAcompR <- function(exons, introns, design,
       introns_dge <- DGEList(counts=intronsf, genes=rownames(intronsf))
       introns_dge <- calcNormFactors(introns_dge, method="TMM")
       introns_dge <- estimateDisp(introns_dge, designf2, robust=T)
-      introns_fit <- glmFit(introns_dge, designf2)
+      introns_fit <- glmFit(introns_dge, designf2, robust=T)
       introns_qlf <- glmLRT(introns_fit)
       introns_results <- topTags(introns_qlf, n=nrow(introns_dge))
       
@@ -157,7 +157,7 @@ getEISAcompR <- function(exons, introns, design,
       DE_dge <- DGEList(counts=exonsf, genes=rownames(exonsf))
       DE_dge <- calcNormFactors(DE_dge, method="TMM")
       DE_dge <- estimateDisp(DE_dge, designf3, robust=T)
-      DE_fit <- glmFit(DE_dge, designf3)
+      DE_fit <- glmFit(DE_dge, designf3, robust=T)
       DE_qlf <- glmLRT(DE_fit)
       DE_results <- topTags(DE_qlf, n=nrow(DE_dge))
       
@@ -280,7 +280,7 @@ getEISAcompR <- function(exons, introns, design,
       exons_dge <- DGEList(counts=merged_ei, genes=rownames(merged_ei))
       exons_dge <- calcNormFactors(exons_dge, method="TMM")
       exons_dge <- estimateDisp(exons_dge, designf, robust=T)
-      exons_fit <- glmQLFit(exons_dge, designf)
+      exons_fit <- glmQLFit(exons_dge, designf, robust=T)
       exons_qlf <- glmQLFTest(exons_fit)
       exons_results <- topTags(exons_qlf, n=nrow(exons_dge))
       
@@ -288,7 +288,7 @@ getEISAcompR <- function(exons, introns, design,
       introns_dge <- DGEList(counts=intronsf, genes=rownames(intronsf))
       introns_dge <- calcNormFactors(introns_dge, method="TMM")
       introns_dge <- estimateDisp(introns_dge, designf2, robust=T)
-      introns_fit <- glmQLFit(introns_dge, designf2)
+      introns_fit <- glmQLFit(introns_dge, designf2, robust=T)
       introns_qlf <- glmQLFTest(introns_fit)
       introns_results <- topTags(introns_qlf, n=nrow(introns_dge))
       
@@ -296,7 +296,7 @@ getEISAcompR <- function(exons, introns, design,
       DE_dge <- DGEList(counts=exonsf, genes=rownames(exonsf))
       DE_dge <- calcNormFactors(DE_dge, method="TMM")
       DE_dge <- estimateDisp(DE_dge, designf3, robust=T)
-      DE_fit <- glmQLFit(DE_dge, designf3)
+      DE_fit <- glmQLFit(DE_dge, designf3, robust=T)
       DE_qlf <- glmQLFTest(DE_fit)
       DE_results <- topTags(DE_qlf, n=nrow(DE_dge))
       
@@ -308,7 +308,7 @@ getEISAcompR <- function(exons, introns, design,
       exons_dge <- DGEList(counts=merged_ei, genes=rownames(merged_ei))
       exons_dge <- calcNormFactors(exons_dge, method="TMM")
       exons_dge <- estimateDisp(exons_dge, designf, robust=T)
-      exons_fit <- glmQLFit(exons_dge, designf)
+      exons_fit <- glmQLFit(exons_dge, designf, robust=T)
       exons_qlf <- glmQLFTest(exons_fit)
       exons_results <- topTags(exons_qlf, n=nrow(exons_dge))
       
@@ -316,7 +316,7 @@ getEISAcompR <- function(exons, introns, design,
       introns_dge <- DGEList(counts=intronsf, genes=rownames(intronsf))
       introns_dge <- calcNormFactors(introns_dge, method="TMM")
       introns_dge <- estimateDisp(introns_dge, designf2, robust=T)
-      introns_fit <- glmQLFit(introns_dge, designf2)
+      introns_fit <- glmQLFit(introns_dge, designf2, robust=T)
       introns_qlf <- glmQLFTest(introns_fit)
       introns_results <- topTags(introns_qlf, n=nrow(introns_dge))
       
@@ -324,7 +324,7 @@ getEISAcompR <- function(exons, introns, design,
       DE_dge <- DGEList(counts=exonsf, genes=rownames(exonsf))
       DE_dge <- calcNormFactors(DE_dge, method="TMM")
       DE_dge <- estimateDisp(DE_dge, designf3, robust=T)
-      DE_fit <- glmQLFit(DE_dge, designf3)
+      DE_fit <- glmQLFit(DE_dge, designf3, robust=T)
       DE_qlf <- glmQLFTest(DE_fit)
       DE_results <- topTags(DE_qlf, n=nrow(DE_dge))
       
