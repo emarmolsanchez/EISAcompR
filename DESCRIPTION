@@ -1,0 +1,37 @@
+Package: EISAcompR
+Type: Package
+Title: EISAcompR: a comprehensive and user-friendly pipeline for performing Exon/Intron Split Analysis (EISA) using RNA-Seq data
+Version: 0.1
+Author: Emilio Mármol-Sánchez [aut, cre]
+Maintainer: "Emilio Mármol-Sánchez" <emilio.marmol@scilifelab.se>
+Imports: 
+    edgeR,
+    Rsubread,
+    GenomicFeatures,
+    IRanges,
+    methods,
+    utils,
+    S4Vectors,
+    BiocGenerics, 
+    GenomeInfoDb
+Depends:
+    R(>= 3.6.0),
+    stats
+Suggests:
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr  
+output: 
+        BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{EISAcompR: a comprehensive and user-friendly pipeline for performing Exon/Intron Split Analysis (EISA) using RNA-Seq data.}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+Description: EISAcompR is a comprehensive and user-friendly pipeline for performing Exon/Intron Split Analysis (EISA) using RNA-Seq data, as reported by Gaidatzis et al. (2015) [1]. This document is intended to give a technical supplementary description about how to run the EISAcompR pipeline through a detailed explanation of all the modules that form part of this tool.
+License: GPL-3
+Encoding: UTF-8
+Collate: 'getEISAcompR.R' 'getEISAcounts.R' 'makeEISAgtfs.R' 'writeEISAgtfs.R' 'zzz.R'
+LazyData: true
+NeedsCompilation: no
+Roxygen: list()
+RoxygenNote: 7.1.1
