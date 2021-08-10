@@ -32,6 +32,10 @@ The following R libraries are required for running the EISACompR pipeline:
 &nbsp;
 &nbsp;
 
+# Install 
+
+devtools::install_github(repo="emarmolsanchez/EISACompR")
+
 # Functions
 
 The next R functions are implemented for running EISA on a set of genes from RNA-Seq data or any other quantification method able to discriminate between exonic and intronic genomic ranges. All required steps are thoroughly explained and exemplified as follows:
