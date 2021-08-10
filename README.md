@@ -35,13 +35,13 @@ The following R libraries are required for running the EISACompR pipeline:
 # Install 
 
 devtools::install_github(repo="emarmolsanchez/EISACompR") 
-//
+
 Note: if EISACompR R package is not in the default branch, use instead: 
-//
+
 devtools::install_github(repo="lauzingaretti/EISACompR@R_package") 
-//
+
 devtools::install_github(repo="emarmolsanchez/EISACompR@R_package") 
-//
+
 where @ indicates the branch allocating the R package structure. 
 
 
