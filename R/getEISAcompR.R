@@ -429,12 +429,11 @@ getEISAcompR <- function(Exons, Introns, design,
 
 
     ## Store results in object
-    methods::setClass("EISAcompR",
-             slots = list(resPTc = "data.frame", resTc = "data.frame", resDE = "data.frame",
-                          Expr_Int = "data.frame", Expr_Ex = "data.frame"))
-    results <- methods::new("EISAcompR", resPTc = data.frame(merged_PTc),
-                   resTc = data.frame(merged_Tc), resDE = data.frame(merged_DE),
-                   Expr_Int = data.frame(Intronsflog), Expr_Ex = data.frame(Exonsflog))
+    #methods::setClass("EISAcompR",
+  #           slots = list(resPTc = "data.frame", resTc = "data.frame", resDE = "data.frame",
+  #                        Expr_Int = "data.frame", Expr_Ex = "data.frame"))
+    results <- list("resTc" = data.frame(merged_Tc), "resDE" = data.frame(merged_DE),
+                   "Expr_Int" = data.frame(Intronsflog), "Expr_Ex" = data.frame(Exonsflog))
 
   }
 

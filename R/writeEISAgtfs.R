@@ -17,8 +17,8 @@
 #'@importFrom utils write.table
 writeEISAgtfs <- function(eisaR.obj, out.path="~/"){
 
-  exonGTF <- eisaR.obj@exonsGTF
-  intronGTF <- eisaR.obj@intronsGTF
+  exonGTF <- eisaR.obj$exonsGTF
+  intronGTF <- eisaR.obj$intronsGTF
 
 
   ## Write GTFs

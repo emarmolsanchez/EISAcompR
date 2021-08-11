@@ -97,7 +97,7 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
     message("Removing singleton positions ... ", appendLF=FALSE)
 
   }
-print("ch1")
+
   i_ex <- which(Exons_fR$V4==Exons_fR$V5)
 
   if (length(i_ex)!= 0){
@@ -106,7 +106,7 @@ print("ch1")
     Exons_fR <- Exons_fR
   }
 
-  print("ch2")
+
   i_int <- which(Introns_fR$V4==Introns_fR$V5)
 
   if (length(i_int)!= 0){
@@ -115,7 +115,7 @@ print("ch1")
     Introns_fR <- Introns_fR}
 
 
-  print("ch3")
+
   if(show_message){
     message("Done")
     ## Modify boundaries
@@ -123,21 +123,21 @@ print("ch1")
 
   }
 
-  print("ch4")
+
   Exons_fR$V4 <- Exons_fR$V4-boundaryFix
   Exons_fR$V5 <- Exons_fR$V5+boundaryFix
   Exons_fR$V4 <- ifelse(Exons_fR$V4<0, 1, Exons_fR$V4)
 
   i_ex <- which(Exons_fR$V4==Exons_fR$V5)
 
-  print("ch5")
+
   if (length(i_ex)!=0){
   Exons_fR <- Exons_fR[-i_ex,]
   } else if (length(i_ex)==0){
     Exons_fR <- Exons_fR}
 
 
-  print("ch6")
+
   i_ex <- which(Exons_fR$V4>Exons_fR$V5)
 
   if (length(i_ex)!=0){
@@ -145,14 +145,14 @@ print("ch1")
   } else if (length(i_ex)==0){
     Exons_fR <- Exons_fR}
 
-  print("ch7")
+
   Introns_fR$V4 <- Introns_fR$V4+boundaryFix
   Introns_fR$V5 <- Introns_fR$V5-boundaryFix
   Introns_fR$V4 <- ifelse(Introns_fR$V4<0, 1, Introns_fR$V4)
 
   i_int <- which(Introns_fR$V4==Introns_fR$V5)
 
-  print("ch8")
+
   if (length(i_int)!=0){
     Introns_fR <- Introns_fR[-i_int,]
   } else if (length(i_int)==0){
@@ -165,18 +165,18 @@ print("ch1")
   } else if (length(i_int)==0){
     Introns_fR <- Introns_fR}
 
-  print("ch9")
+
   Exons_fR <- Exons_fR[-grep("gene_id c", Exons_fR$V9), ]
   Introns_fR <- Introns_fR[-grep("gene_id c", Introns_fR$V9), ]
 
 
-  print("ch10")
-  ## Store results in object
-  methods::setClass("EISAcompR",
-           slots = list(exonsGTF = "data.frame", intronsGTF = "data.frame"))
 
-  print("ch1s")
-  results <- methods::new("EISAcompR", exonsGTF = Exons_fR, intronsGTF = Introns_fR)
+  ## Store results in object
+  #methods::setClass("EISAcompR",
+  #         slots = list(exonsGTF = "data.frame", intronsGTF = "data.frame"))
+
+
+  results <- list("exonsGTF" = Exons_fR, "intronsGTF" = Introns_fR)
 
   if(show_message){
     message("Done")
