@@ -19,8 +19,8 @@
 #'Non-significant PTc + Significant Tc + Significant DE = Gene showing mixed Transcriptional and Post-transcriptional regulatory signal
 #'
 
-#'@param exons Exonic raw counts (genes in rows and samples in columns).
-#'@param introns Intronic raw counts (genes in rows and samples in columns).
+#'@param Exons Exonic raw counts (genes in rows and samples in columns).
+#'@param Introns Intronic raw counts (genes in rows and samples in columns).
 #'@param design Design matrix (1st = sample names; 2nd = group assignment + optionally one additional column with batch effect).
 #'@param filterExpr Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
 #'@param percent Percentage of samples showing minimum expression threshold for filtering (50\% by default).
@@ -60,7 +60,7 @@
 #'@examples
 #' {
 #' \dontrun{
-#'eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix,
+#'eisa <- getEISAcomp(Exons=exon_counts, Introns=intron_counts, design=design_matrix,
 #' filterExpr=TRUE, percent=0.5, cpm=1)
 #' }
 #'
@@ -68,7 +68,7 @@
 #'@name getEISAcompR
 #'@rdname getEISAcompR-getEISAcompR
 
-getEISAcompR <- function(exons, introns, design,
+getEISAcompR <- function(Exons, Introns, design,
                          filterExpr=TRUE, percent=0.5, cpm=1){
 
 
@@ -78,17 +78,17 @@ getEISAcompR <- function(exons, introns, design,
   ncol_design <- ncol(design)
   i1 <- as.vector(which(design.m[,1]==1))
   i2 <- as.vector(which(design.m[,2]==1))
-  exons.1 <- exons[,i1]
-  exons.2 <- exons[,i2]
-  introns.1 <- introns[,i1]
-  introns.2 <- introns[,i2]
+  Exons.1 <- Exons[,i1]
+  Exons.2 <- Exons[,i2]
+  Introns.1 <- Introns[,i1]
+  Introns.2 <- Introns[,i2]
 
-  exonsf <- exons
-  intronsf <- introns
+  Exonsf <- Exons
+  Intronsf <- Introns
 
   ## Normalize
-  exonsf0 <- mean(colSums(exonsf))*(exonsf)/colSums(exonsf)
-  intronsf0 <- mean(colSums(intronsf))*(intronsf)/colSums(intronsf)
+  Exonsf0 <- mean(colSums(Exonsf))*(Exonsf)/colSums(Exonsf)
+  Intronsf0 <- mean(colSums(Intronsf))*(Intronsf)/colSums(Intronsf)
 
 
   if(filterExpr==TRUE){
@@ -96,45 +96,45 @@ getEISAcompR <- function(exons, introns, design,
     ## Filter by Expression
     message("Filtering by Expression thresholds ... ", appendLF=FALSE)
 
-    n <- ncol(exonsf0)
-    exons_dge <- edgeR::DGEList(exonsf0)
-    exons_keep <- rowSums(cpm(exons_dge)>cpm) >= round(n*percent)
-    exonsf0 <- exonsf0[exons_keep,]
+    n <- ncol(Exonsf0)
+    Exons_dge <- edgeR::DGEList(Exonsf0)
+    Exons_keep <- rowSums(cpm(Exons_dge)>cpm) >= round(n*percent)
+    Exonsf0 <- Exonsf0[Exons_keep,]
 
-    introns_dge <- edgeR::DGEList(intronsf0)
-    introns_keep <- rowSums(cpm(introns_dge)>cpm) >= round(n*percent)
-    intronsf0 <- intronsf0[introns_keep,]
+    Introns_dge <- edgeR::DGEList(Intronsf0)
+    Introns_keep <- rowSums(cpm(Introns_dge)>cpm) >= round(n*percent)
+    Intronsf0 <- Intronsf0[Introns_keep,]
 
     message("OK")
 
     ## Log2 Transform
     message("Computing DiffEx/DiffInt Estimates ... ", appendLF=FALSE)
 
-    exonsf.1 <- log2((exonsf0[,i1])+1)
-    exonsf.2 <- log2((exonsf0[,i2])+1)
-    intronsf.1 <- log2((intronsf0[,i1])+1)
-    intronsf.2 <- log2((intronsf0[,i2])+1)
-    exonsflog <- cbind(exonsf.1, exonsf.2)
-    intronsflog <- cbind(intronsf.1, intronsf.2)
-    mergedflog <- merge(exonsflog, intronsflog, by="row.names")
+    Exonsf.1 <- log2((Exonsf0[,i1])+1)
+    Exonsf.2 <- log2((Exonsf0[,i2])+1)
+    Intronsf.1 <- log2((Intronsf0[,i1])+1)
+    Intronsf.2 <- log2((Intronsf0[,i2])+1)
+    Exonsflog <- cbind(Exonsf.1, Exonsf.2)
+    Intronsflog <- cbind(Intronsf.1, Intronsf.2)
+    mergedflog <- merge(Exonsflog, Intronsflog, by="row.names")
     rownames(mergedflog) <- mergedflog$Row.names
     mergedflog <- mergedflog[,-1]
-    exonsflog <- mergedflog[,1:n]
-    colnames(exonsflog) <- colnames(exonsf0)
-    intronsflog <- mergedflog[,(n+1):(n*2)]
-    colnames(intronsflog) <- colnames(intronsf0)
+    Exonsflog <- mergedflog[,1:n]
+    colnames(Exonsflog) <- colnames(Exonsf0)
+    Intronsflog <- mergedflog[,(n+1):(n*2)]
+    colnames(Intronsflog) <- colnames(Intronsf0)
 
     ## Diff Exons/Introns
-    MeanEx.1 <- rowMeans(exonsf.1)
-    MeanEx.2 <- rowMeans(exonsf.2)
+    MeanEx.1 <- rowMeans(Exonsf.1)
+    MeanEx.2 <- rowMeans(Exonsf.2)
     DiffEx <- as.data.frame(MeanEx.2 - MeanEx.1)
-    rownames(DiffEx) <- rownames(exonsf0)
+    rownames(DiffEx) <- rownames(Exonsf0)
     colnames(DiffEx) <- c("DiffEx")
 
-    MeanInt.1 <- rowMeans(intronsf.1)
-    MeanInt.2 <- rowMeans(intronsf.2)
+    MeanInt.1 <- rowMeans(Intronsf.1)
+    MeanInt.2 <- rowMeans(Intronsf.2)
     DiffInt <- as.data.frame(MeanInt.2 - MeanInt.1)
-    rownames(DiffInt) <- rownames(intronsf0)
+    rownames(DiffInt) <- rownames(Intronsf0)
     colnames(DiffInt) <- c("DiffInt")
 
 
@@ -149,13 +149,13 @@ getEISAcompR <- function(exons, introns, design,
     message("OK")
 
     ## Filter by Expression and Correct
-    iex <- which(rownames(exonsf) %in% rownames(merged_Diff))
-    iint <- which(rownames(intronsf) %in% rownames(merged_Diff))
+    iex <- which(rownames(Exonsf) %in% rownames(merged_Diff))
+    iint <- which(rownames(Intronsf) %in% rownames(merged_Diff))
 
-    exonsf <- exonsf[iex,]
-    intronsf <- intronsf[iint,]
+    Exonsf <- Exonsf[iex,]
+    Intronsf <- Intronsf[iint,]
 
-    merged_ei <- data.frame(exonsf, intronsf)
+    merged_ei <- data.frame(Exonsf, Intronsf)
 
     factor.group <- rep(design.m[,2],2)
     factor.group2 <- design.m[,2]
@@ -173,23 +173,23 @@ getEISAcompR <- function(exons, introns, design,
       design.batch <- design.batch[,3]
 
       designf <- stats::model.matrix(~factor.group*factor.type+design.batch2)
-      exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
-      exons_dge <- edgeR::calcNormFactors(exons_dge, method="TMM")
-      exons_dge <- edgeR::estimateDisp(exons_dge, designf, robust=T)
-      exons_fit <-edgeR::glmQLFit(exons_dge, designf)
-      exons_qlf <- edgeR::glmQLFTest(exons_fit)
-      exons_results <- edgeR::topTags(exons_qlf, n=nrow(exons_dge))
+      Exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
+      Exons_dge <- edgeR::calcNormFactors(Exons_dge, method="TMM")
+      Exons_dge <- edgeR::estimateDisp(Exons_dge, designf, robust=T)
+      Exons_fit <-edgeR::glmQLFit(Exons_dge, designf)
+      Exons_qlf <- edgeR::glmQLFTest(Exons_fit)
+      Exons_results <- edgeR::topTags(Exons_qlf, n=nrow(Exons_dge))
 
       designf2 <- stats::model.matrix(~factor.group2+design.batch)
-      introns_dge <- edgeR::DGEList(counts=intronsf, genes=rownames(intronsf))
-      introns_dge <- edgeR::calcNormFactors(introns_dge, method="TMM")
-      introns_dge <- edgeR::estimateDisp(introns_dge, designf2, robust=T)
-      introns_fit <-edgeR::glmQLFit(introns_dge, designf2)
-      introns_qlf <- edgeR::glmQLFTest(introns_fit)
-      introns_results <- edgeR::topTags(introns_qlf, n=nrow(introns_dge))
+      Introns_dge <- edgeR::DGEList(counts=Intronsf, genes=rownames(Intronsf))
+      Introns_dge <- edgeR::calcNormFactors(Introns_dge, method="TMM")
+      Introns_dge <- edgeR::estimateDisp(Introns_dge, designf2, robust=T)
+      Introns_fit <-edgeR::glmQLFit(Introns_dge, designf2)
+      Introns_qlf <- edgeR::glmQLFTest(Introns_fit)
+      Introns_results <- edgeR::topTags(Introns_qlf, n=nrow(Introns_dge))
 
       designf3 <- stats::model.matrix(~factor.group2+design.batch)
-      DE_dge <- edgeR::DGEList(counts=exonsf, genes=rownames(exonsf))
+      DE_dge <- edgeR::DGEList(counts=Exonsf, genes=rownames(Exonsf))
       DE_dge <- edgeR::calcNormFactors(DE_dge, method="TMM")
       DE_dge <- edgeR::estimateDisp(DE_dge, designf3, robust=T)
       DE_fit <-edgeR::glmQLFit(DE_dge, designf3)
@@ -201,23 +201,23 @@ getEISAcompR <- function(exons, introns, design,
     } else if(ncol(design) == 2) {
 
       designf <- stats::model.matrix(~factor.group*factor.type)
-      exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
-      exons_dge <- edgeR::calcNormFactors(exons_dge, method="TMM")
-      exons_dge <- edgeR::estimateDisp(exons_dge, designf, robust=T)
-      exons_fit <- edgeR::glmFit(exons_dge, designf)
-      exons_qlf <- edgeR::glmLRT(exons_fit)
-      exons_results <- edgeR::topTags(exons_qlf, n=nrow(exons_dge))
+      Exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
+      Exons_dge <- edgeR::calcNormFactors(Exons_dge, method="TMM")
+      Exons_dge <- edgeR::estimateDisp(Exons_dge, designf, robust=T)
+      Exons_fit <- edgeR::glmFit(Exons_dge, designf)
+      Exons_qlf <- edgeR::glmLRT(Exons_fit)
+      Exons_results <- edgeR::topTags(Exons_qlf, n=nrow(Exons_dge))
 
       designf2 <- stats::model.matrix(~factor.group2)
-      introns_dge <- edgeR::DGEList(counts=intronsf, genes=rownames(intronsf))
-      introns_dge <- edgeR::calcNormFactors(introns_dge, method="TMM")
-      introns_dge <- edgeR::estimateDisp(introns_dge, designf2, robust=T)
-      introns_fit <- edgeR::glmFit(introns_dge, designf2)
-      introns_qlf <- edgeR::glmLRT(introns_fit)
-      introns_results <- edgeR::topTags(introns_qlf, n=nrow(introns_dge))
+      Introns_dge <- edgeR::DGEList(counts=Intronsf, genes=rownames(Intronsf))
+      Introns_dge <- edgeR::calcNormFactors(Introns_dge, method="TMM")
+      Introns_dge <- edgeR::estimateDisp(Introns_dge, designf2, robust=T)
+      Introns_fit <- edgeR::glmFit(Introns_dge, designf2)
+      Introns_qlf <- edgeR::glmLRT(Introns_fit)
+      Introns_results <- edgeR::topTags(Introns_qlf, n=nrow(Introns_dge))
 
       designf3 <- stats::model.matrix(~factor.group2)
-      DE_dge <- edgeR::DGEList(counts=exonsf, genes=rownames(exonsf))
+      DE_dge <- edgeR::DGEList(counts=Exonsf, genes=rownames(Exonsf))
       DE_dge <- edgeR::calcNormFactors(DE_dge, method="TMM")
       DE_dge <- edgeR::estimateDisp(DE_dge, designf3, robust=T)
       DE_fit <- edgeR::glmFit(DE_dge, designf3)
@@ -230,24 +230,24 @@ getEISAcompR <- function(exons, introns, design,
 
 
     ## Merge Results
-    merged_PTc <- merge(merged_Diff, exons_results$table, by="row.names")
+    merged_PTc <- merge(merged_Diff, Exons_results$table, by="row.names")
     merged_PTc <- data.frame(cbind(merged_PTc$logFC, merged_PTc$DiffEx,
                                    scale(merged_PTc$DiffExDiffInt),
                                    merged_PTc$PValue, merged_PTc$FDR))
     rownames(merged_PTc) <- rownames(merged_Diff)
     colnames(merged_PTc) <- c("log2FC", "DiffEx", "PTc", "Pvalue", "FDR")
 
-    merged_Tc <- merge(merged_Diff, introns_results$table, by="row.names")
+    merged_Tc <- merge(merged_Diff, Introns_results$table, by="row.names")
     merged_Tc <- data.frame(cbind(merged_Tc$logFC, merged_Tc$DiffInt,
                                   scale(merged_Tc$DiffInt),
                                   merged_Tc$PValue, merged_Tc$FDR))
     rownames(merged_Tc) <- rownames(merged_Diff)
     colnames(merged_Tc) <- c("log2FC", "DiffInt", "Tc", "Pvalue", "FDR")
 
-    log2CPM_exonsf.1 <- log2(cpm(exons_dge[,i1])+1)
-    log2CPM_exonsf.2 <- log2(cpm(exons_dge[,i2])+1)
-    Meanlog2CPM.1 <- data.frame(rowMeans(log2CPM_exonsf.1))
-    Meanlog2CPM.2 <- data.frame(rowMeans(log2CPM_exonsf.2))
+    log2CPM_Exonsf.1 <- log2(cpm(Exons_dge[,i1])+1)
+    log2CPM_Exonsf.2 <- log2(cpm(Exons_dge[,i2])+1)
+    Meanlog2CPM.1 <- data.frame(rowMeans(log2CPM_Exonsf.1))
+    Meanlog2CPM.2 <- data.frame(rowMeans(log2CPM_Exonsf.2))
 
     Table_DE <- data.frame(cbind(DE_results$table$logFC, DE_results$table$PValue,
                                  DE_results$table$FDR))
@@ -267,7 +267,7 @@ getEISAcompR <- function(exons, introns, design,
                           Expr_Int = "data.frame", Expr_Ex = "data.frame"))
     results <- methods::new("EISAcompR", resPTc = data.frame(merged_PTc),
                    resTc = data.frame(merged_Tc), resDE = data.frame(merged_DE),
-                   Expr_Int = data.frame(intronsflog), Expr_Ex = data.frame(exonsflog))
+                   Expr_Int = data.frame(Intronsflog), Expr_Ex = data.frame(Exonsflog))
 
 
   } else if(filterExpr==FALSE){
@@ -275,33 +275,33 @@ getEISAcompR <- function(exons, introns, design,
     ## Log2 Transform
     message("Computing DiffEx/DiffInt Estimates ... ", appendLF=FALSE)
 
-    n <- ncol(exonsf0)
+    n <- ncol(Exonsf0)
 
-    exonsf.1 <- log2((exonsf0[,i1])+1)
-    exonsf.2 <- log2((exonsf0[,i2])+1)
-    intronsf.1 <- log2((intronsf0[,i1])+1)
-    intronsf.2 <- log2((intronsf0[,i2])+1)
-    exonsflog <- cbind(exonsf.1, exonsf.2)
-    intronsflog <- cbind(intronsf.1, intronsf.2)
-    mergedflog <- merge(exonsflog, intronsflog, by="row.names")
+    Exonsf.1 <- log2((Exonsf0[,i1])+1)
+    Exonsf.2 <- log2((Exonsf0[,i2])+1)
+    Intronsf.1 <- log2((Intronsf0[,i1])+1)
+    Intronsf.2 <- log2((Intronsf0[,i2])+1)
+    Exonsflog <- cbind(Exonsf.1, Exonsf.2)
+    Intronsflog <- cbind(Intronsf.1, Intronsf.2)
+    mergedflog <- merge(Exonsflog, Intronsflog, by="row.names")
     rownames(mergedflog) <- mergedflog$Row.names
     mergedflog <- mergedflog[,-1]
-    exonsflog <- mergedflog[,1:n]
-    colnames(exonsflog) <- colnames(exonsf0)
-    intronsflog <- mergedflog[,(n+1):(n*2)]
-    colnames(intronsflog) <- colnames(intronsf0)
+    Exonsflog <- mergedflog[,1:n]
+    colnames(Exonsflog) <- colnames(Exonsf0)
+    Intronsflog <- mergedflog[,(n+1):(n*2)]
+    colnames(Intronsflog) <- colnames(Intronsf0)
 
     ## Diff Exons/Introns
-    MeanEx.1 <- rowMeans(exonsf.1)
-    MeanEx.2 <- rowMeans(exonsf.2)
+    MeanEx.1 <- rowMeans(Exonsf.1)
+    MeanEx.2 <- rowMeans(Exonsf.2)
     DiffEx <- as.data.frame(MeanEx.2 - MeanEx.1)
-    rownames(DiffEx) <- rownames(exonsf0)
+    rownames(DiffEx) <- rownames(Exonsf0)
     colnames(DiffEx) <- c("DiffEx")
 
-    MeanInt.1 <- rowMeans(intronsf.1)
-    MeanInt.2 <- rowMeans(intronsf.2)
+    MeanInt.1 <- rowMeans(Intronsf.1)
+    MeanInt.2 <- rowMeans(Intronsf.2)
     DiffInt <- as.data.frame(MeanInt.2 - MeanInt.1)
-    rownames(DiffInt) <- rownames(intronsf0)
+    rownames(DiffInt) <- rownames(Intronsf0)
     colnames(DiffInt) <- c("DiffInt")
 
 
@@ -316,13 +316,13 @@ getEISAcompR <- function(exons, introns, design,
     message("OK")
 
     ## Filter by Expression and Correct
-    iex <- which(rownames(exonsf) %in% rownames(merged_Diff))
-    iint <- which(rownames(intronsf) %in% rownames(merged_Diff))
+    iex <- which(rownames(Exonsf) %in% rownames(merged_Diff))
+    iint <- which(rownames(Intronsf) %in% rownames(merged_Diff))
 
-    exonsf <- exonsf[iex,]
-    intronsf <- intronsf[iint,]
+    Exonsf <- Exonsf[iex,]
+    Intronsf <- Intronsf[iint,]
 
-    merged_ei <- data.frame(exonsf, intronsf)
+    merged_ei <- data.frame(Exonsf, Intronsf)
 
     factor.group <- rep(design.m[,2],2)
     factor.group2 <- design.m[,2]
@@ -340,23 +340,23 @@ getEISAcompR <- function(exons, introns, design,
       design.batch <- design.batch[,3]
 
       designf <- stats::model.matrix(~factor.group*factor.type+design.batch2)
-      exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
-      exons_dge <- edgeR::calcNormFactors(exons_dge, method="TMM")
-      exons_dge <- edgeR::estimateDisp(exons_dge, designf, robust=T)
-      exons_fit <-edgeR::glmQLFit(exons_dge, designf)
-      exons_qlf <- edgeR::glmQLFTest(exons_fit)
-      exons_results <- edgeR::topTags(exons_qlf, n=nrow(exons_dge))
+      Exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
+      Exons_dge <- edgeR::calcNormFactors(Exons_dge, method="TMM")
+      Exons_dge <- edgeR::estimateDisp(Exons_dge, designf, robust=T)
+      Exons_fit <-edgeR::glmQLFit(Exons_dge, designf)
+      Exons_qlf <- edgeR::glmQLFTest(Exons_fit)
+      Exons_results <- edgeR::topTags(Exons_qlf, n=nrow(Exons_dge))
 
       designf2 <- stats::model.matrix(~factor.group2+design.batch)
-      introns_dge <- edgeR::DGEList(counts=intronsf, genes=rownames(intronsf))
-      introns_dge <- edgeR::calcNormFactors(introns_dge, method="TMM")
-      introns_dge <- edgeR::estimateDisp(introns_dge, designf2, robust=T)
-      introns_fit <-edgeR::glmQLFit(introns_dge, designf2)
-      introns_qlf <- edgeR::glmQLFTest(introns_fit)
-      introns_results <- edgeR::topTags(introns_qlf, n=nrow(introns_dge))
+      Introns_dge <- edgeR::DGEList(counts=Intronsf, genes=rownames(Intronsf))
+      Introns_dge <- edgeR::calcNormFactors(Introns_dge, method="TMM")
+      Introns_dge <- edgeR::estimateDisp(Introns_dge, designf2, robust=T)
+      Introns_fit <-edgeR::glmQLFit(Introns_dge, designf2)
+      Introns_qlf <- edgeR::glmQLFTest(Introns_fit)
+      Introns_results <- edgeR::topTags(Introns_qlf, n=nrow(Introns_dge))
 
       designf3 <- stats::model.matrix(~factor.group2+design.batch)
-      DE_dge <- edgeR::DGEList(counts=exonsf, genes=rownames(exonsf))
+      DE_dge <- edgeR::DGEList(counts=Exonsf, genes=rownames(Exonsf))
       DE_dge <- edgeR::calcNormFactors(DE_dge, method="TMM")
       DE_dge <- edgeR::estimateDisp(DE_dge, designf3, robust=T)
       DE_fit <-edgeR::glmQLFit(DE_dge, designf3)
@@ -368,23 +368,23 @@ getEISAcompR <- function(exons, introns, design,
     } else if(ncol(design) == 2) {
 
       designf <- stats::model.matrix(~factor.group*factor.type)
-      exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
-      exons_dge <- edgeR::calcNormFactors(exons_dge, method="TMM")
-      exons_dge <- edgeR::estimateDisp(exons_dge, designf, robust=T)
-      exons_fit <-edgeR::glmQLFit(exons_dge, designf)
-      exons_qlf <- edgeR::glmQLFTest(exons_fit)
-      exons_results <- edgeR::topTags(exons_qlf, n=nrow(exons_dge))
+      Exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
+      Exons_dge <- edgeR::calcNormFactors(Exons_dge, method="TMM")
+      Exons_dge <- edgeR::estimateDisp(Exons_dge, designf, robust=T)
+      Exons_fit <-edgeR::glmQLFit(Exons_dge, designf)
+      Exons_qlf <- edgeR::glmQLFTest(Exons_fit)
+      Exons_results <- edgeR::topTags(Exons_qlf, n=nrow(Exons_dge))
 
       designf2 <- stats::model.matrix(~factor.group2)
-      introns_dge <- edgeR::DGEList(counts=intronsf, genes=rownames(intronsf))
-      introns_dge <- edgeR::calcNormFactors(introns_dge, method="TMM")
-      introns_dge <- edgeR::estimateDisp(introns_dge, designf2, robust=T)
-      introns_fit <-edgeR::glmQLFit(introns_dge, designf2)
-      introns_qlf <- edgeR::glmQLFTest(introns_fit)
-      introns_results <- edgeR::topTags(introns_qlf, n=nrow(introns_dge))
+      Introns_dge <- edgeR::DGEList(counts=Intronsf, genes=rownames(Intronsf))
+      Introns_dge <- edgeR::calcNormFactors(Introns_dge, method="TMM")
+      Introns_dge <- edgeR::estimateDisp(Introns_dge, designf2, robust=T)
+      Introns_fit <-edgeR::glmQLFit(Introns_dge, designf2)
+      Introns_qlf <- edgeR::glmQLFTest(Introns_fit)
+      Introns_results <- edgeR::topTags(Introns_qlf, n=nrow(Introns_dge))
 
       designf3 <- stats::model.matrix(~factor.group2)
-      DE_dge <- edgeR::DGEList(counts=exonsf, genes=rownames(exonsf))
+      DE_dge <- edgeR::DGEList(counts=Exonsf, genes=rownames(Exonsf))
       DE_dge <- edgeR::calcNormFactors(DE_dge, method="TMM")
       DE_dge <- edgeR::estimateDisp(DE_dge, designf3, robust=T)
       DE_fit <-edgeR::glmQLFit(DE_dge, designf3)
@@ -397,24 +397,24 @@ getEISAcompR <- function(exons, introns, design,
 
 
     ## Merge Results
-    merged_PTc <- merge(merged_Diff, exons_results$table, by="row.names")
+    merged_PTc <- merge(merged_Diff, Exons_results$table, by="row.names")
     merged_PTc <- data.frame(cbind(merged_PTc$logFC, merged_PTc$DiffEx,
                                    scale(merged_PTc$DiffExDiffInt),
                                    merged_PTc$PValue, merged_PTc$FDR))
     rownames(merged_PTc) <- rownames(merged_Diff)
     colnames(merged_PTc) <- c("log2FC", "DiffEx", "PTc", "Pvalue", "FDR")
 
-    merged_Tc <- merge(merged_Diff, introns_results$table, by="row.names")
+    merged_Tc <- merge(merged_Diff, Introns_results$table, by="row.names")
     merged_Tc <- data.frame(cbind(merged_Tc$logFC, merged_Tc$DiffInt,
                                   scale(merged_Tc$DiffInt),
                                   merged_Tc$PValue, merged_Tc$FDR))
     rownames(merged_Tc) <- rownames(merged_Diff)
     colnames(merged_Tc) <- c("log2FC", "DiffInt", "Tc", "Pvalue", "FDR")
 
-    log2CPM_exonsf.1 <- log2(cpm(exons_dge[,i1])+1)
-    log2CPM_exonsf.2 <- log2(cpm(exons_dge[,i2])+1)
-    Meanlog2CPM.1 <- data.frame(rowMeans(log2CPM_exonsf.1))
-    Meanlog2CPM.2 <- data.frame(rowMeans(log2CPM_exonsf.2))
+    log2CPM_Exonsf.1 <- log2(cpm(Exons_dge[,i1])+1)
+    log2CPM_Exonsf.2 <- log2(cpm(Exons_dge[,i2])+1)
+    Meanlog2CPM.1 <- data.frame(rowMeans(log2CPM_Exonsf.1))
+    Meanlog2CPM.2 <- data.frame(rowMeans(log2CPM_Exonsf.2))
 
     Table_DE <- data.frame(cbind(DE_results$table$logFC, DE_results$table$PValue,
                                  DE_results$table$FDR))
@@ -434,7 +434,7 @@ getEISAcompR <- function(exons, introns, design,
                           Expr_Int = "data.frame", Expr_Ex = "data.frame"))
     results <- methods::new("EISAcompR", resPTc = data.frame(merged_PTc),
                    resTc = data.frame(merged_Tc), resDE = data.frame(merged_DE),
-                   Expr_Int = data.frame(intronsflog), Expr_Ex = data.frame(exonsflog))
+                   Expr_Int = data.frame(Intronsflog), Expr_Ex = data.frame(Exonsflog))
 
   }
 
