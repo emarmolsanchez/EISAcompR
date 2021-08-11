@@ -143,28 +143,28 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
   Introns_fR$V5 <- Introns_fR$V5-boundaryFix
   Introns_fR$V4 <- ifelse(Introns_fR$V4<0, 1, Introns_fR$V4)
 
-  i_int <- which(Introns_fR$V4==Intrones_fR$V5)
+  i_int <- which(Introns_fR$V4==Introns_fR$V5)
 
   if (length(i_int)!=0){
-    Intrones_fR <- Intrones_fR[-i_int,]
+    Introns_fR <- Introns_fR[-i_int,]
   } else if (length(i_int)==0){
-    Intrones_fR <- Intrones_fR}
+    Introns_fR <- Introns_fR}
 
-  i_int <- which(Intrones_fR$V4>Intrones_fR$V5)
+  i_int <- which(Introns_fR$V4>Introns_fR$V5)
 
   if (length(i_int)!=0){
-    Intrones_fR <- Intrones_fR[-i_int,]
+    Introns_fR <- Introns_fR[-i_int,]
   } else if (length(i_int)==0){
-    Intrones_fR <- Intrones_fR}
+    Introns_fR <- Introns_fR}
 
   Exons_fR <- Exons_fR[-grep("gene_id c", Exons_fR$V9), ]
-  Intrones_fR <- Intrones_fR[-grep("gene_id c", Intrones_fR$V9), ]
+  Introns_fR <- Introns_fR[-grep("gene_id c", Introns_fR$V9), ]
 
 
   ## Store results in object
   methods::setClass("EISAcompR",
            slots = list(exonsGTF = "data.frame", intronsGTF = "data.frame"))
-  results <- methods::new("EISAcompR", exonsGTF = Exons_fR, intronsGTF = Intrones_fR)
+  results <- methods::new("EISAcompR", exonsGTF = Exons_fR, intronsGTF = Introns_fR)
 
   if(show_message){
     message("Done")
