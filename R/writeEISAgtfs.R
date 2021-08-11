@@ -22,9 +22,9 @@ writeEISAgtfs <- function(eisaR.obj, out.path="~/"){
 
 
   ## Write GTFs
-  utils::write.table(exonGTF, paste0(out.path,"exons.gtf"), quote=F,
+  utils::write.table(exonGTF, paste0(out.path,"Exons.gtf"), quote=F,
               sep="\t", col.names=F, row.names=F)
-  utils::write.table(intronGTF, paste0(out.path,"introns.gtf"), quote=F,
+  utils::write.table(intronGTF, paste0(out.path,"Introns.gtf"), quote=F,
               sep="\t", col.names=F, row.names=F)
 
 

@@ -58,36 +58,36 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
     message("Splitting E/I features ... ", appendLF=FALSE)
     }
 
-  exons <- GenomicFeatures::exonicParts(GR, linked.to.single.gene.only = F)
-  introns <- GenomicFeatures::intronicParts(GR, linked.to.single.gene.only = F)
+  Exons <- GenomicFeatures::exonicParts(GR, linked.to.single.gene.only = F)
+  Introns <- GenomicFeatures::intronicParts(GR, linked.to.single.gene.only = F)
   if(show_message){
     message("Done")
   }
 
 
-  ## Filter intronic ranges overlapping exons
+  ## Filter intronic ranges overlapping Exons
   if(show_message){
     message("Removing overlapping exonic loci ... ", appendLF=FALSE)
   }
 
 
-  introns <- IRanges::subsetByOverlaps(introns, exons, invert=T, ignore.strand=T)
+  Introns <- IRanges::subsetByOverlaps(Introns, Exons, invert=T, ignore.strand=T)
   if(show_message){
     message("Done")
-    ## Write exons/introns GTF
+    ## Write Exons/Introns GTF
     message("Generating E/I gtfs ... ", appendLF=FALSE)
 
   }
 
 
 
-  GR2gtf(exons, "exons.gtf", feature.type="exon")
-  GR2gtf(introns, "introns.gtf", feature.type="intron")
+  GR2gtf(Exons, "Exons.gtf", feature.type="exon")
+  GR2gtf(Introns, "Introns.gtf", feature.type="intron")
 
-  ## Read exons/introns GTF
+  ## Read Exons/Introns GTF
   #add fill
-  exons <- utils::read.table("exons.gtf", sep="\t",fill=TRUE)
-  introns <- utils::read.table("introns.gtf", sep="\t",fill=TRUE)
+  Exons <- utils::read.table("Exons.gtf", sep="\t",fill=TRUE)
+  Introns <- utils::read.table("Introns.gtf", sep="\t",fill=TRUE)
 
   if(show_message){
     message("Done")
@@ -96,20 +96,20 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
   }
 
-  i_ex <- which(exons$V4==exons$V5)
+  i_ex <- which(Exons$V4==Exons$V5)
 
   if (length(i_ex)!= 0){
-    exons <- exons[-i_ex,]
+    Exons <- Exons[-i_ex,]
   } else if (length(i_ex)==0) {
-    exons <- exons
+    Exons <- Exons
   }
 
-  i_int <- which(introns$V4==introns$V5)
+  i_int <- which(Introns$V4==Introns$V5)
 
   if (length(i_int)!= 0){
-    introns <- introns[-i_int,]
+    Introns <- Introns[-i_int,]
   } else if (length(i_int)==0) {
-    introns <- introns}
+    Introns <- Introns}
 
 
   if(show_message){
@@ -119,50 +119,50 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
   }
 
-  exons$V4 <- exons$V4-boundaryFix
-  exons$V5 <- exons$V5+boundaryFix
-  exons$V4 <- ifelse(exons$V4<0, 1, exons$V4)
+  Exons$V4 <- Exons$V4-boundaryFix
+  Exons$V5 <- Exons$V5+boundaryFix
+  Exons$V4 <- ifelse(Exons$V4<0, 1, Exons$V4)
 
-  i_ex <- which(exons$V4==exons$V5)
-
-  if (length(i_ex)!=0){
-  exons <- exons[-i_ex,]
-  } else if (length(i_ex)==0){
-    exons <- exons}
-
-  i_ex <- which(exons$V4>exons$V5)
+  i_ex <- which(Exons$V4==Exons$V5)
 
   if (length(i_ex)!=0){
-  exons <- exons[-i_ex,]
+  Exons <- Exons[-i_ex,]
   } else if (length(i_ex)==0){
-    exons <- exons}
+    Exons <- Exons}
 
-  introns$V4 <- introns$V4+boundaryFix
-  introns$V5 <- introns$V5-boundaryFix
-  introns$V4 <- ifelse(introns$V4<0, 1, introns$V4)
+  i_ex <- which(Exons$V4>Exons$V5)
 
-  i_int <- which(introns$V4==introns$V5)
+  if (length(i_ex)!=0){
+  Exons <- Exons[-i_ex,]
+  } else if (length(i_ex)==0){
+    Exons <- Exons}
+
+  Introns$V4 <- Introns$V4+boundaryFix
+  Introns$V5 <- Introns$V5-boundaryFix
+  Introns$V4 <- ifelse(Introns$V4<0, 1, Introns$V4)
+
+  i_int <- which(Introns$V4==Introns$V5)
 
   if (length(i_int)!=0){
-    introns <- introns[-i_int,]
+    Introns <- Introns[-i_int,]
   } else if (length(i_int)==0){
-    introns <- introns}
+    Introns <- Introns}
 
-  i_int <- which(introns$V4>introns$V5)
+  i_int <- which(Introns$V4>Introns$V5)
 
   if (length(i_int)!=0){
-    introns <- introns[-i_int,]
+    Introns <- Introns[-i_int,]
   } else if (length(i_int)==0){
-    introns <- introns}
+    Introns <- Introns}
 
-  exons <- exons[-grep("gene_id c", exons$V9), ]
-  introns <- introns[-grep("gene_id c", introns$V9), ]
+  Exons <- Exons[-grep("gene_id c", Exons$V9), ]
+  Introns <- Introns[-grep("gene_id c", Introns$V9), ]
 
 
   ## Store results in object
   methods::setClass("EISAcompR",
            slots = list(exonsGTF = "data.frame", intronsGTF = "data.frame"))
-  results <- methods::new("EISAcompR", exonsGTF = exons, intronsGTF = introns)
+  results <- methods::new("EISAcompR", exonsGTF = Exons, intronsGTF = Introns)
 
   if(show_message){
     message("Done")
