@@ -13,13 +13,12 @@
 
 #'@import GenomicFeatures
 #'@import IRanges
-#'@import data.table
 #'@importFrom data.table fread
 #'@importFrom GenomicFeatures makeTxDbFromGFF
 #'@importFrom GenomicFeatures exonicParts
 #'@importFrom GenomicFeatures intronicParts
 #'@importFrom IRanges subsetByOverlaps
-#'@importFrom utils table
+#'@importFrom utils read.table
 #'@importFrom methods setClass
 #'@importFrom methods new
 #'
@@ -144,7 +143,7 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
   Introns_fR$V5 <- Introns_fR$V5-boundaryFix
   Introns_fR$V4 <- ifelse(Introns_fR$V4<0, 1, Introns_fR$V4)
 
-  i_int <- which(introns_fR$V4==Intrones_fR$V5)
+  i_int <- which(Introns_fR$V4==Intrones_fR$V5)
 
   if (length(i_int)!=0){
     Intrones_fR <- Intrones_fR[-i_int,]
