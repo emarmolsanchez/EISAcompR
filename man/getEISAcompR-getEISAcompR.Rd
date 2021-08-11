@@ -4,12 +4,12 @@
 \alias{getEISAcompR}
 \title{getEISAcompR}
 \usage{
-getEISAcompR(exons, introns, design, filterExpr = TRUE, percent = 0.5, cpm = 1)
+getEISAcompR(Exons, Introns, design, filterExpr = TRUE, percent = 0.5, cpm = 1)
 }
 \arguments{
-\item{exons}{Exonic raw counts (genes in rows and samples in columns).}
+\item{Exons}{Exonic raw counts (genes in rows and samples in columns).}
 
-\item{introns}{Intronic raw counts (genes in rows and samples in columns).}
+\item{Introns}{Intronic raw counts (genes in rows and samples in columns).}
 
 \item{design}{Design matrix (1st = sample names; 2nd = group assignment + optionally one additional column with batch effect).}
 
@@ -50,7 +50,7 @@ Non-significant PTc + Significant Tc + Significant DE = Gene showing mixed Trans
 \examples{
 {
 \dontrun{
-eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix,
+eisa <- getEISAcomp(Exons=exon_counts, Introns=intron_counts, design=design_matrix,
 filterExpr=TRUE, percent=0.5, cpm=1)
 }
 
