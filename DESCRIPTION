@@ -7,6 +7,7 @@ Maintainer: "Emilio Mármol-Sánchez" <emilio.marmol@scilifelab.se>
 Imports: 
     edgeR,
     Rsubread,
+    data.table,
     GenomicFeatures,
     IRanges,
     methods,

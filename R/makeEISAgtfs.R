@@ -13,11 +13,13 @@
 
 #'@import GenomicFeatures
 #'@import IRanges
+#'@import data.table
+#'@importFrom data.table fread
 #'@importFrom GenomicFeatures makeTxDbFromGFF
 #'@importFrom GenomicFeatures exonicParts
 #'@importFrom GenomicFeatures intronicParts
 #'@importFrom IRanges subsetByOverlaps
-#'@importFrom utils read.table
+#'@importFrom utils table
 #'@importFrom methods setClass
 #'@importFrom methods new
 #'
@@ -86,8 +88,9 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
   ## Read Exons/Introns GTF
   #add fill
-  Exons_fR <- utils::read.table("Exons.gtf", sep="\t",fill=TRUE)
-  Introns_fR <- utils::read.table("Introns.gtf", sep="\t",fill=TRUE)
+  #considering use fread instead
+  Exons_fR <- data.table::fread("Exons.gtf", sep="\t",fill=TRUE)
+  Introns_fR <- data.table::fread("Introns.gtf", sep="\t",fill=TRUE)
 
   if(show_message){
     message("Done")
@@ -104,12 +107,12 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
     Exons_fR <- Exons_fR
   }
 
-  i_int <- which(introns_fR$V4==introns_fR$V5)
+  i_int <- which(Introns_fR$V4==Introns_fR$V5)
 
   if (length(i_int)!= 0){
-    introns_fR <- introns_fR[-i_int,]
+    Introns_fR <- Introns_fR[-i_int,]
   } else if (length(i_int)==0) {
-    introns_fR <- introns_fR}
+    Introns_fR <- Introns_fR}
 
 
   if(show_message){
@@ -137,32 +140,32 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
   } else if (length(i_ex)==0){
     Exons_fR <- Exons_fR}
 
-  introns_fR$V4 <- introns_fR$V4+boundaryFix
-  introns_fR$V5 <- introns_fR$V5-boundaryFix
-  introns_fR$V4 <- ifelse(introns_fR$V4<0, 1, introns_fR$V4)
+  Introns_fR$V4 <- Introns_fR$V4+boundaryFix
+  Introns_fR$V5 <- Introns_fR$V5-boundaryFix
+  Introns_fR$V4 <- ifelse(Introns_fR$V4<0, 1, Introns_fR$V4)
 
-  i_int <- which(introns_fR$V4==introns_fR$V5)
-
-  if (length(i_int)!=0){
-    introns_fR <- introns_fR[-i_int,]
-  } else if (length(i_int)==0){
-    introns_fR <- introns_fR}
-
-  i_int <- which(introns_fR$V4>introns_fR$V5)
+  i_int <- which(introns_fR$V4==Intrones_fR$V5)
 
   if (length(i_int)!=0){
-    introns_fR <- introns_fR[-i_int,]
+    Intrones_fR <- Intrones_fR[-i_int,]
   } else if (length(i_int)==0){
-    introns_fR <- introns_fR}
+    Intrones_fR <- Intrones_fR}
+
+  i_int <- which(Intrones_fR$V4>Intrones_fR$V5)
+
+  if (length(i_int)!=0){
+    Intrones_fR <- Intrones_fR[-i_int,]
+  } else if (length(i_int)==0){
+    Intrones_fR <- Intrones_fR}
 
   Exons_fR <- Exons_fR[-grep("gene_id c", Exons_fR$V9), ]
-  introns_fR <- introns_fR[-grep("gene_id c", introns_fR$V9), ]
+  Intrones_fR <- Intrones_fR[-grep("gene_id c", Intrones_fR$V9), ]
 
 
   ## Store results in object
   methods::setClass("EISAcompR",
            slots = list(exonsGTF = "data.frame", intronsGTF = "data.frame"))
-  results <- methods::new("EISAcompR", exonsGTF = Exons_fR, intronsGTF = introns_fR)
+  results <- methods::new("EISAcompR", exonsGTF = Exons_fR, intronsGTF = Intrones_fR)
 
   if(show_message){
     message("Done")
