@@ -86,8 +86,8 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
   ## Read Exons/Introns GTF
   #add fill
-  Exons_f <- utils::read.table("Exons.gtf", sep="\t",fill=TRUE)
-  Introns_f <- utils::read.table("Introns.gtf", sep="\t",fill=TRUE)
+  Exons_fR <- utils::read.table("Exons.gtf", sep="\t",fill=TRUE)
+  Introns_fR <- utils::read.table("Introns.gtf", sep="\t",fill=TRUE)
 
   if(show_message){
     message("Done")
@@ -96,20 +96,20 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
   }
 
-  i_ex <- which(Exons_f$V4==Exons_f$V5)
+  i_ex <- which(Exons_fR$V4==Exons_fR$V5)
 
   if (length(i_ex)!= 0){
-    Exons_f <- Exons_f[-i_ex,]
+    Exons_fR <- Exons_fR[-i_ex,]
   } else if (length(i_ex)==0) {
-    Exons_f <- Exons_f
+    Exons_fR <- Exons_fR
   }
 
-  i_int <- which(Introns_f$V4==Introns_f$V5)
+  i_int <- which(introns_fR$V4==introns_fR$V5)
 
   if (length(i_int)!= 0){
-    Introns_f <- Introns_f[-i_int,]
+    introns_fR <- introns_fR[-i_int,]
   } else if (length(i_int)==0) {
-    Introns_f <- Introns_f}
+    introns_fR <- introns_fR}
 
 
   if(show_message){
@@ -119,50 +119,50 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
   }
 
-  Exons_f$V4 <- Exons_f$V4-boundaryFix
-  Exons_f$V5 <- Exons_f$V5+boundaryFix
-  Exons_f$V4 <- ifelse(Exons_f$V4<0, 1, Exons_f$V4)
+  Exons_fR$V4 <- Exons_fR$V4-boundaryFix
+  Exons_fR$V5 <- Exons_fR$V5+boundaryFix
+  Exons_fR$V4 <- ifelse(Exons_fR$V4<0, 1, Exons_fR$V4)
 
-  i_ex <- which(Exons_f$V4==Exons_f$V5)
-
-  if (length(i_ex)!=0){
-  Exons_f <- Exons_f[-i_ex,]
-  } else if (length(i_ex)==0){
-    Exons_f <- Exons_f}
-
-  i_ex <- which(Exons_f$V4>Exons_f$V5)
+  i_ex <- which(Exons_fR$V4==Exons_fR$V5)
 
   if (length(i_ex)!=0){
-  Exons_f <- Exons_f[-i_ex,]
+  Exons_fR <- Exons_fR[-i_ex,]
   } else if (length(i_ex)==0){
-    Exons_f <- Exons_f}
+    Exons_fR <- Exons_fR}
 
-  Introns_f$V4 <- Introns_f$V4+boundaryFix
-  Introns_f$V5 <- Introns_f$V5-boundaryFix
-  Introns_f$V4 <- ifelse(Introns_f$V4<0, 1, Introns_f$V4)
+  i_ex <- which(Exons_fR$V4>Exons_fR$V5)
 
-  i_int <- which(Introns_f$V4==Introns_f$V5)
+  if (length(i_ex)!=0){
+  Exons_fR <- Exons_fR[-i_ex,]
+  } else if (length(i_ex)==0){
+    Exons_fR <- Exons_fR}
+
+  introns_fR$V4 <- introns_fR$V4+boundaryFix
+  introns_fR$V5 <- introns_fR$V5-boundaryFix
+  introns_fR$V4 <- ifelse(introns_fR$V4<0, 1, introns_fR$V4)
+
+  i_int <- which(introns_fR$V4==introns_fR$V5)
 
   if (length(i_int)!=0){
-    Introns_f <- Introns_f[-i_int,]
+    introns_fR <- introns_fR[-i_int,]
   } else if (length(i_int)==0){
-    Introns_f <- Introns_f}
+    introns_fR <- introns_fR}
 
-  i_int <- which(Introns_f$V4>Introns_f$V5)
+  i_int <- which(introns_fR$V4>introns_fR$V5)
 
   if (length(i_int)!=0){
-    Introns_f <- Introns_f[-i_int,]
+    introns_fR <- introns_fR[-i_int,]
   } else if (length(i_int)==0){
-    Introns_f <- Introns_f}
+    introns_fR <- introns_fR}
 
-  Exons_f <- Exons_f[-grep("gene_id c", Exons_f$V9), ]
-  Introns_f <- Introns_f[-grep("gene_id c", Introns_f$V9), ]
+  Exons_fR <- Exons_fR[-grep("gene_id c", Exons_fR$V9), ]
+  introns_fR <- introns_fR[-grep("gene_id c", introns_fR$V9), ]
 
 
   ## Store results in object
   methods::setClass("EISAcompR",
            slots = list(exonsGTF = "data.frame", intronsGTF = "data.frame"))
-  results <- methods::new("EISAcompR", exonsGTF = Exons_f, intronsGTF = Introns_f)
+  results <- methods::new("EISAcompR", exonsGTF = Exons_fR, intronsGTF = introns_fR)
 
   if(show_message){
     message("Done")
