@@ -2,6 +2,8 @@
 
 EISAcompR is a comprehensive and user-friendly pipeline for performing Exon/Intron Split Analysis (EISA) using RNA-Seq data, as reported by Gaidatzis *et al.* (2015) [[1]]. This document is intended to give a technical supplementary description about how to run the EISAcompR pipeline through a detailed explanation of all the modules that form part of this tool.
 
+We have implemented a framework to prioritize post-transcriptional regulatory signals jointly with enrichment and covariation analyses to infer which miRNAs might be putatively affecting the post-transcriptional downregulation of targeted mRNAs highlighted by EISA. For further details please refer to https://www.biorxiv.org/content/10.1101/2021.07.14.452370v4
+
 &nbsp;
 &nbsp;
 
