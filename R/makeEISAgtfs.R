@@ -13,12 +13,10 @@
 
 #'@import GenomicFeatures
 #'@import IRanges
-#'@importFrom data.table fread
 #'@importFrom GenomicFeatures makeTxDbFromGFF
 #'@importFrom GenomicFeatures exonicParts
 #'@importFrom GenomicFeatures intronicParts
 #'@importFrom IRanges subsetByOverlaps
-#'@importFrom utils read.table
 #'@importFrom methods setClass
 #'@importFrom methods new
 #'
@@ -35,17 +33,12 @@
 #'
 #'@name makeEISAgtfs
 #'@rdname makeEISAgtfs-makeEISAgtfs
-makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_message=TRUE){
+makeEISAgtfs <- function(annotFile,boundaryFix=10, show_message=TRUE){
   if(show_message){
     message("")
     message("Loading GTF file ... ", appendLF=FALSE)
   }
 
-  setwd(path_temp_files)
-  Dir0 <- "tmp_EISA"
-  dir.create(file.path(Dir0), showWarnings=FALSE)
-  workdir <- paste0(path_temp_files,Dir0)
-  setwd(workdir)
   options(warn=-1)
   if(show_message){
     message("Done")
@@ -82,15 +75,10 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
 
 
-  GR2gtf(Exons_f, "Exons.gtf", feature.type="exon")
-  GR2gtf(Introns_f, "Introns.gtf", feature.type="intron")
+  Exons_fR = GR2gtf(Exons_f, feature.type="exon")
+  Introns_fR = GR2gtf(Introns_f, feature.type="intron")
 
-  ## Read Exons/Introns GTF
-  #add fill
-  #considering use fread instead
-  Exons_fR <- data.table::fread("Exons.gtf", sep="\t",fill=TRUE)
-  Introns_fR <- data.table::fread("Introns.gtf", sep="\t",fill=TRUE)
-
+ 
   if(show_message){
     message("Done")
     ## Remove single nt positions
@@ -98,7 +86,7 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
   }
 
-  i_ex <- which(Exons_fR$V4==Exons_fR$V5)
+  i_ex <- which(Exons_fR$start==Exons_fR$end)
 
   if (length(i_ex)!= 0){
     Exons_fR <- Exons_fR[-i_ex,]
@@ -107,7 +95,7 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
   }
 
 
-  i_int <- which(Introns_fR$V4==Introns_fR$V5)
+  i_int <- which(Introns_fR$start==Introns_fR$end)
 
   if (length(i_int)!= 0){
     Introns_fR <- Introns_fR[-i_int,]
@@ -124,11 +112,11 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
   }
 
 
-  Exons_fR$V4 <- Exons_fR$V4-boundaryFix
-  Exons_fR$V5 <- Exons_fR$V5+boundaryFix
-  Exons_fR$V4 <- ifelse(Exons_fR$V4<0, 1, Exons_fR$V4)
+  Exons_fR$start <- Exons_fR$start-boundaryFix
+  Exons_fR$end <- Exons_fR$end+boundaryFix
+  Exons_fR$start <- ifelse(Exons_fR$start<0, 1, Exons_fR$start)
 
-  i_ex <- which(Exons_fR$V4==Exons_fR$V5)
+  i_ex <- which(Exons_fR$start==Exons_fR$end)
 
 
   if (length(i_ex)!=0){
@@ -138,7 +126,7 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
 
 
 
-  i_ex <- which(Exons_fR$V4>Exons_fR$V5)
+  i_ex <- which(Exons_fR$start>Exons_fR$end)
 
   if (length(i_ex)!=0){
   Exons_fR <- Exons_fR[-i_ex,]
@@ -146,11 +134,11 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
     Exons_fR <- Exons_fR}
 
 
-  Introns_fR$V4 <- Introns_fR$V4+boundaryFix
-  Introns_fR$V5 <- Introns_fR$V5-boundaryFix
-  Introns_fR$V4 <- ifelse(Introns_fR$V4<0, 1, Introns_fR$V4)
+  Introns_fR$start <- Introns_fR$start+boundaryFix
+  Introns_fR$end <- Introns_fR$end-boundaryFix
+  Introns_fR$start <- ifelse(Introns_fR$start<0, 1, Introns_fR$start)
 
-  i_int <- which(Introns_fR$V4==Introns_fR$V5)
+  i_int <- which(Introns_fR$start==Introns_fR$end)
 
 
   if (length(i_int)!=0){
@@ -158,7 +146,7 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
   } else if (length(i_int)==0){
     Introns_fR <- Introns_fR}
 
-  i_int <- which(Introns_fR$V4>Introns_fR$V5)
+  i_int <- which(Introns_fR$start>Introns_fR$end)
 
   if (length(i_int)!=0){
     Introns_fR <- Introns_fR[-i_int,]
@@ -166,8 +154,8 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
     Introns_fR <- Introns_fR}
 
 
-  Exons_fR <- Exons_fR[-grep("gene_id c", Exons_fR$V9), ]
-  Introns_fR <- Introns_fR[-grep("gene_id c", Introns_fR$V9), ]
+  Exons_fR <- Exons_fR[-grep("gene_id c", Exons_fR$attrb), ]
+  Introns_fR <- Introns_fR[-grep("gene_id c", Introns_fR$attrb), ]
 
 
 
@@ -181,10 +169,6 @@ makeEISAgtfs <- function(annotFile, path_temp_files="~/",boundaryFix=10, show_me
   if(show_message){
     message("Done")
     }
-
-
-  setwd(path_temp_files)
-  unlink("tmp_EISA", recursive=T)
 
   return(results)
 
