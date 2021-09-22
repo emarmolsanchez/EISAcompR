@@ -26,7 +26,7 @@ makeGtfAttributes <- function(df, cols=NULL) {
 }
 
 
-GR2gtf <- function(regions, filename, feature.type, src="EISAcompR",
+GR2gtf <- function(regions, feature.type, src="EISAcompR",
                    score=".", phase=".", attributes=NULL, ...) {
 
   strnd = as.character(BiocGenerics::strand(regions))
@@ -38,6 +38,8 @@ GR2gtf <- function(regions, filename, feature.type, src="EISAcompR",
                    makeGtfAttributes(as.data.frame(S4Vectors::elementMetadata(regions)),
                                      cols=attributes), stringsAsFactors=F)
 
-  utils::write.table(tab, file=filename, sep="\t", quote=F, row.names=F,
-              col.names=F, ...)
+  colnames(tab) = c("chr", "src", "feature", "start", "end", "score",
+                      "strnd", "phase", "attrb")
+  
+    return(tab)
 }
