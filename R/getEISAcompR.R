@@ -262,7 +262,7 @@ getEISAcompR <- function(Exons, Introns, design,
 
 
     ## Store results in object
-    results <- list("resTc" = data.frame(merged_Tc), "resDE" = data.frame(merged_DE),
+    results <- list("resPTc" = data.frame(merged_PTc), "resTc" = data.frame(merged_Tc), "resDE" = data.frame(merged_DE),
                    "Expr_Int" = data.frame(Intronsflog), "Expr_Ex" = data.frame(Exonsflog))
 
 
@@ -425,7 +425,7 @@ getEISAcompR <- function(Exons, Introns, design,
 
 
     ## Store results in object
-    results <- list("resTc" = data.frame(merged_Tc), "resDE" = data.frame(merged_DE),
+    results <- list("resPTc" = data.frame(merged_PTc), "resTc" = data.frame(merged_Tc), "resDE" = data.frame(merged_DE),
                    "Expr_Int" = data.frame(Intronsflog), "Expr_Ex" = data.frame(Exonsflog))
 
   }
