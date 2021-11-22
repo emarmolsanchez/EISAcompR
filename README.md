@@ -38,6 +38,9 @@ The following R libraries are required for running the EISACompR pipeline:
 
 devtools::install_github(repo="emarmolsanchez/EISAcompR") 
 
+&nbsp;
+&nbsp;
+
 
 # Functions
 
