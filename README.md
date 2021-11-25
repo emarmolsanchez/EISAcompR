@@ -5,6 +5,12 @@ EISAcompR is a comprehensive and user-friendly pipeline for performing Exon/Intr
 We have implemented a framework to prioritize miRNA-driven post-transcriptional regulatory signals jointly with enrichment and covariation analyses to infer which miRNAs might be putatively affecting the post-transcriptional downregulation of targeted mRNAs highlighted by EISA. For further details please refer to https://www.biorxiv.org/content/10.1101/2021.07.14.452370v4
 
 &nbsp;
+
+## Contact
+
+emilio.marmol.sanchez@gmail.com
+
+&nbsp;
 &nbsp;
 
 -------------------------------------------------------------------------------------------------------------------------------
