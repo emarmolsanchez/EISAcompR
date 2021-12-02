@@ -134,7 +134,9 @@ Once the function has run, it will create a raw count matrix stored at `counts` 
 
 ## getEISAcompR
 
-This is the main function used to calculate exon/intron split estimates and to compute the transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated) and includes the possibility of user-defined batch correction. Users must prepare their exon/intron counts, design and batch (optional) matrices including data for same number of selected samples. In the event that design matrix includes an additional batch effect apart from sample name (1st) and group assignment (2nd), it will be considered as independent batch effect. If no batch correction needs to be implemented, please only use a two-column design matrix.
+This is the main function used to calculate exon/intron split estimates and to compute the transcriptional and post-transcriptional components of each gene, as well as to infer the significance of each regulatory component independently. The pipeline is implemented for two-group contrast (tipically control vs treated) and includes the possibility of user-defined batch correction. Users must prepare their exon/intron counts, design and batch (optional) matrices including data for same number of selected samples. In the event that design matrix includes an additional batch effect apart from sample name (1st) and group assignment (2nd), it will be considered as independent batch effect. If no batch correction needs to be implemented, please only use a two-column design matrix. 
+
+While the likelihood ratio test (LRT) is a more obvious choice for obtaining EISA and DE significance estimates, the quasi-likelihood F-test (QLF) is preferred as it reflects the uncertainty in estimating the dispersion for each gene. It provides more robust and reliable error rate control when the number of replicates is small. If the experimental design includes a good replication number (typically more than 10 replicates per group), users can opt for the more flexible LRT approach. If the design is limited in replication, we recommend to implement the QLF method.
 
 This function requires seven arguments:
 
@@ -142,6 +144,7 @@ This function requires seven arguments:
 + Intronic raw counts (genes in rows and samples in columns).
 + Design matrix (1st = sample names; 2nd = group assignment + optionally one additional column with batch effect).
 + Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
++ Type of test to perform for inferring significance in EISA and DE results. Quasi-likelihood F-test ("QLF") or likelihood ratio test ("LRT"). Default is QLF.
 + Percentage of samples showing minimum expression threshold for filtering (50% by default).
 + counts-per-million (CPM) expression threshold for filtering lowly expressed genes (1 CPM by default).
 
@@ -149,7 +152,7 @@ Example of usage:
 
 ```r
 
-eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, filterExpr=TRUE, percent=0.5, cpm=1)
+eisa <- getEISAcomp(exons=exon_counts, introns=intron_counts, design=design_matrix, filterExpr=TRUE, model="QLF", percent=0.5, cpm=1)
 
 ```
 &nbsp;
