@@ -69,7 +69,7 @@
 #'@name getEISAcompR
 #'@rdname getEISAcompR-getEISAcompR
 
-getEISAcompR <- function(Exons, Introns, design, model="LRT",
+getEISAcompR <- function(Exons, Introns, design, model="QLF",
                          filterExpr=TRUE, percent=0.5, cpm=1){
   
   
