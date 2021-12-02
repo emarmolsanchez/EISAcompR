@@ -23,6 +23,7 @@
 #'@param Introns Intronic raw counts (genes in rows and samples in columns).
 #'@param design Design matrix (1st = sample names; 2nd = group assignment + optionally one additional column with batch effect).
 #'@param filterExpr Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
+#'@param Type of test to perform for inferring significance in EISA and DE results. Quasi-likelihood F-test ("QLF") or likelihood ratio test ("LRT"). Default is QLF.
 #'@param percent Percentage of samples showing minimum expression threshold for filtering (50\% by default).
 #'@param cpm counts-per-million (CPM) expression threshold for filtering lowly expressed genes (1 CPM by default).
 
