@@ -23,6 +23,7 @@ emilio.marmol.sanchez@gmail.com
     - [writeEISAgtfs](https://github.com/emarmolsanchez/EISACompR/#writeeisagtfs)
     - [getEISAcounts](https://github.com/emarmolsanchez/EISACompR/#geteisacounts)
     - [getEISAcompR](https://github.com/emarmolsanchez/EISACompR/#geteisacomp)
+    - [getCES](https://github.com/emarmolsanchez/EISACompR/#getces)
 
 &nbsp;
 &nbsp;
