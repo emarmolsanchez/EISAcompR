@@ -35,6 +35,9 @@ The following R libraries are required for running the EISACompR pipeline:
 + [IRanges] [[2]]
 + [Rsubread] [[3]]
 + [edgeR] [[4]]
++ [PCIT] [[5]]
++ [psych] [[6]]
++ [reshape2] [[7]]
 
 
 &nbsp;
@@ -184,6 +187,33 @@ Output interpretation:
 &nbsp;
 &nbsp;
 
+##getCES
+
+This function is intented to calculate the CES value for each gene in a given set of genes compared to a defined background. The CES value reflects the frequency with which the mRNA expression correlation between members of the defined gene set of interest (in this case, genes showing high post-transcriptional signals and downregulation driven by miRNAs) is different compared with other genes defined as background (in this case, differentially expressed genes with no evidence of miRNA-related downregulatory effects). Other set of genes might be used as background, such as, for instance, the whole set of expressed genes excluding those included in the gene set of interest. However, including a high number of genes as background might overestimate CES values and result in high memory usage and prolonged running time. We recommend to limit the analysis to DE genes and a reduced number of genes of interest with high post-transcriptional signals.
+
+In this way, we can represent the variability in covariation within a set of genes as a fold chang comparing the increase or reduction of significant covariation events relative to the overall gene expression background. Genes sets showing a coordinated high post-transcriptional downregulation are expected to show an increased covariation among each other when compared with their covariation with other genes.
+
+To achive this purpose, we have implemented a network-oriented filtering criteria based on Partial Correlations and Information Theory ([PCIT]) approach as proposed by Reverter *et al.* (2008) [[6]]. By using first-order partial correlation coefficients estimated for each trio of genes along with an information theory approach, this tool identifies meaningful gene-to-gene nteractions. This approach aims to determine truly informative correlations between node pairs (genes in our context), once the influence of other nodes in the network has been considered. Alternative methods based on naive *P*-value and multiple testing corrected *P*-value with the False Discovery Rate (FDR) method [[7]] are also provided as alternative to the [PCIT] algorithm.
+
+**This function requires five arguments**
+
++ Normalized counts in log2 scale belonging to the gene set of interest (genes in rows and samples in columns).
++ Normalized counts in log2 scale belonging to differentially expresssed genes excluding genes present in the set of interest (genes in rows and samples in columns).
++ Method to calculate pairwise correlation among genes (available methods are "pearson", "spearman" and "kendall". Spearman by default). 
++ Correlation threshold for prioritizing significant pairwise covariation events (0.6 by default).
++ Network inference algorithm to prioritize significant covariation events (available methods are "pcit", "pvalue", "fdr". PCIT by default).
+
+**Example of usage:**
+
+```r
+
+CES <- getCES(ExprSet=Gene_set_counts, ExprBack=DE_genes_counts, method="spearman", cor=0.6, Filter="pcit")
+
+```
+&nbsp;
+
+Once the function has run, it will calculate a CES value for each gene included in the gene set of interest `ExprSet`, as a measure of the fold change of significant covariation events when comparing them with the gene set of interest and with the whole set of genes used as background.
+
 -------------------------------------------------------------------------------------------------------------------------------
 
 # References
@@ -196,12 +226,19 @@ Output interpretation:
 
 4. [Robinson MD et al. (2010) edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. *Bioinformatics*, 26, 139–140.]
 
-5. [Liao et al. (2014) featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. *Bioinformatics*, 30, 923-930.]
+5. [Liao Y et al. (2014) featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. *Bioinformatics*, 30, 923-930.]
+
+6. [Reverter A et al. (2008) Combining partial correlation and an information theory approach to the reversed engineering of gene co-expression networks. *Bioinformatics*, 24, 2491-97.]
+
+7. [Benjamini Y & Hochberg Y (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society Series B (Methodological)*, 57, 289-300.]
 
 [GenomicFeatures]:https://bioconductor.org/packages/release/bioc/html/GenomicFeatures.html
 [IRanges]:https://bioconductor.org/packages/release/bioc/html/IRanges.html
 [Rsubread]:https://bioconductor.org/packages/release/bioc/html/Rsubread.html
 [edgeR]:https://bioconductor.org/packages/release/bioc/html/edgeR.html
+[PCIT]:https://github.com/nathanhaigh/pcit
+[pych]:https://cran.r-project.org/web/packages/psych/
+[reshape2]:https://cran.r-project.org/web/packages/reshape2/
 
 
 [1]:https://www.nature.com/articles/nbt.3269
@@ -209,9 +246,14 @@ Output interpretation:
 [3]:https://academic.oup.com/nar/article/47/8/e47/5345150
 [4]:https://academic.oup.com/bioinformatics/article/26/1/139/182458
 [5]:https://academic.oup.com/bioinformatics/article/30/7/923/232889
+[6]:https://academic.oup.com/bioinformatics/article/24/21/2491/192682
+[7]:https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.2517-6161.1995.tb02031.x
 
 [Gaidatzis D et al. (2015) Analysis of intronic and exonic reads in RNA-seq data characterizes transcriptional and post-transcriptional regulation. *Nature Biotechnology*, 33, 722–729.]:https://www.nature.com/articles/nbt.3269
 [Lawrence M et al. (2013) Software for Computing and Annotating Genomic Ranges. *PLoS Computational Biology*, 9, e1003118.]:https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003118
 [Liao Y et al. (2019) The R package Rsubread is easier, faster, cheaper and better for alignment and quantification of RNA sequencing reads. *Nucleid Acids Research*, 47, e47.]:https://academic.oup.com/nar/article/47/8/e47/5345150
 [Robinson MD et al. (2010) edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. *Bioinformatics*, 26, 139–140.]:https://academic.oup.com/bioinformatics/article/26/1/139/182458
-[Liao et al. (2014) featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. *Bioinformatics*, 30, 923-930.]:https://academic.oup.com/bioinformatics/article/30/7/923/232889
+[Liao Y et al. (2014) featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. *Bioinformatics*, 30, 923-930.]:https://academic.oup.com/bioinformatics/article/30/7/923/232889
+[Reverter A et al. (2008) Combining partial correlation and an information theory approach to the reversed engineering of gene co-expression networks. *Bioinformatics*, 24, 2491-97.]:https://academic.oup.com/bioinformatics/article/24/21/2491/192682
+[Benjamini Y & Hochberg Y (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society Series B (Methodological)*, 57, 289-300.]:https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.2517-6161.1995.tb02031.x
+
