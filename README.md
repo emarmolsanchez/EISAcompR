@@ -237,6 +237,10 @@ CES <- getCES(ExprSet=Gene_set_counts, ExprBack=DE_genes_counts, method="spearma
 
 Once the function has run, it will calculate a CES value for each gene included in the gene set of interest `ExprSet`, as a measure of the fold change of significant covariation events when comparing them with each other within the gene set of interest and with the whole set of genes used as background.
 
+&nbsp;
+&nbsp;
+&nbsp;
+
 -------------------------------------------------------------------------------------------------------------------------------
 
 # References
