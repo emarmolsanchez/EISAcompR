@@ -88,6 +88,7 @@ Most commonly, the majority of quantifier tools take only the exonic fraction of
 
 &nbsp;
 &nbsp;
+&nbsp;
 
 ## writeEISAgtfs
 
@@ -113,6 +114,7 @@ writeEISAgtfs(GTFs, "~/")
 
 This command will create two files called `exons.gtf` and `introns.gtf` at the predefined `PATH`, which can be used as canonical GTF annotation for gene quantification using any preferred quantifier tool able to process GTF files as input annotation format (tested on FeatureCounts tool [[3]])
 
+&nbsp;
 &nbsp;
 &nbsp;
 
@@ -144,6 +146,7 @@ intron_counts <- getEISAcounts(files=vector_of_input_BAM/SAM, annotFile="PATH_to
 
 Once the function has run, it will create a raw count matrix stored at `counts` object with quantification estimates of each mapped read to the corresponding exonic/intronic regions and gene assignment.
 
+&nbsp;
 &nbsp;
 &nbsp;
 
@@ -185,13 +188,11 @@ Once the function has run, a list of tabulated results will be created containin
 + Expr_Ex = Normalized log2 expression matrix for Exonic counts.
 
 &nbsp;
-&nbsp;
 
 For transcriptional (Tc) and post-transcriptional (PTc) components, generally, the higher their absolute values (either showing negative or positive regulatory influence), the more relevant regulatory effects could be inferred. Please be aware that the abscence of significance in PTc scores might indicate the presence of mixed transcriptional and post-transcriptional componentes affecting the same gene. Any PTc component showing significant interaction with any other transcriptional (Tc) influence detected at intronic levels will be shown as not significant. Only PTc components with opposing direction to Tc components or when no Tc interacting component is detected will appear as significant.
 
 Users should compare canonical differential expression (DE) results and significance for their genes of interest, as well as their Tc and PTc components, in order to extract meaningfull information about the putative regulatory influence affecting their genes of interest.
 
-&nbsp;
 &nbsp;
 
 Output interpretation:
@@ -202,6 +203,7 @@ Output interpretation:
 
 &nbsp;
 &nbsp;
+&nbsp;
 
 ## getCES
 
@@ -209,7 +211,7 @@ This function is intented to calculate the CES value for each gene in a given se
 
 In this way, we can represent the variability in covariation within a set of genes as a fold chang comparing the increase or reduction of significant covariation events relative to the overall gene expression background. Genes sets showing a coordinated high post-transcriptional downregulation are expected to show an increased covariation among each other when compared with their covariation with other genes.
 
-To achive this purpose, we have implemented a network-oriented filtering criteria based on Partial Correlations and Information Theory ([PCIT]) approach as proposed by Reverter *et al.* (2008) [[5]]. By using first-order partial correlation coefficients estimated for each trio of genes along with an information theory approach, this tool identifies meaningful gene-to-gene nteractions. This approach aims to determine truly informative correlations between node pairs (genes in our context), once the influence of other nodes in the network has been considered. Alternative methods based on naive *P*-value and multiple testing corrected *P*-value with the False Discovery Rate (FDR) method [[8]] are also provided as alternative to the [PCIT] algorithm.
+To achive this purpose, we have implemented a network-oriented filtering criteria based on Partial Correlations and Information Theory ([PCIT]) approach as proposed by Reverter *et al.* (2008) [[5]]. By using first-order partial correlation coefficients estimated for each trio of genes along with an information theory approach, this tool identifies meaningful gene-to-gene nteractions. This approach aims to determine truly informative correlations between node pairs (genes in our context), once the influence of other nodes in the network has been considered. Alternative methods based on naive *P*-value and multiple testing corrected *P*-value with the False Discovery Rate (FDR) method [[6]] are also provided as alternative to the [PCIT] algorithm.
 
 &nbsp;
 
