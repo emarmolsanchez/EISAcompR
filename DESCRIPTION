@@ -14,7 +14,10 @@ Imports:
     methods,
     S4Vectors,
     BiocGenerics, 
-    GenomeInfoDb
+    GenomeInfoDb,
+    PCIT,
+    reshape2,
+    psych
 Depends:
     R(>= 3.6.0),
     stats
@@ -31,8 +34,8 @@ vignette: >
 Description: EISAcompR is a comprehensive and user-friendly pipeline for performing Exon/Intron Split Analysis (EISA) using RNA-Seq data, as reported by Gaidatzis et al. (2015) [1]. This document is intended to give a technical supplementary description about how to run the EISAcompR pipeline through a detailed explanation of all the modules that form part of this tool.
 License: GPL-3
 Encoding: UTF-8
-Collate: 'getEISAcompR.R' 'getEISAcounts.R' 'makeEISAgtfs.R' 'writeEISAgtfs.R' 'zzz.R'
+Collate: 'getEISAcompR.R' 'getEISAcounts.R' 'makeEISAgtfs.R' 'writeEISAgtfs.R' 'CES_function.R' 'zzz.R'
 LazyData: true
 NeedsCompilation: no
 Roxygen: list()
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

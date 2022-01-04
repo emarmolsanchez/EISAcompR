@@ -4,7 +4,15 @@
 \alias{getEISAcompR}
 \title{getEISAcompR}
 \usage{
-getEISAcompR(Exons, Introns, design, filterExpr = TRUE, percent = 0.5, cpm = 1)
+getEISAcompR(
+  Exons,
+  Introns,
+  design,
+  model = "QLF",
+  filterExpr = TRUE,
+  percent = 0.5,
+  cpm = 1
+)
 }
 \arguments{
 \item{Exons}{Exonic raw counts (genes in rows and samples in columns).}
@@ -18,6 +26,8 @@ getEISAcompR(Exons, Introns, design, filterExpr = TRUE, percent = 0.5, cpm = 1)
 \item{percent}{Percentage of samples showing minimum expression threshold for filtering (50\% by default).}
 
 \item{cpm}{counts-per-million (CPM) expression threshold for filtering lowly expressed genes (1 CPM by default).}
+
+\item{Type}{of test to perform for inferring significance in EISA and DE results. Quasi-likelihood F-test ("QLF") or likelihood ratio test ("LRT"). Default is QLF.}
 }
 \value{
 {object with four tables.

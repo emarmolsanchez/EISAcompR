@@ -4,21 +4,16 @@
 \alias{makeEISAgtfs}
 \title{makeEISAgtfs}
 \usage{
-makeEISAgtfs(
-  annotFile,
-  path_temp_files = "~/",
-  boundaryFix = 10,
-  show_message = TRUE
-)
+makeEISAgtfs(annotFile, boundaryFix = 10, show_message = TRUE)
 }
 \arguments{
 \item{annotFile}{PATH to reference GTF annotation file.}
 
-\item{path_temp_files}{Home is the default "~/". This argument indicates the path were the temp_dir with exons, introns info should be created.}
-
 \item{boundaryFix}{Exon junction boundary correction threshold (10 bp by default).}
 
 \item{show_message}{(logical) if TRUE the proccess history is printed. Default TRUE.}
+
+\item{path_temp_files}{Home is the default "~/". This argument indicates the path were the temp_dir with exons, introns info should be created.}
 }
 \value{
 results. It returns a EIsacompR object with the exons and introns information
