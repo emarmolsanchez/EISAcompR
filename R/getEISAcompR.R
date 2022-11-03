@@ -168,13 +168,13 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
     
     if(ncol(design) == 3){
       
-      design.batch <- stats::model.matrix(~0+design[,2]+design[,3])
+      design.batch <- stats::model.matrix(~0+design[,3]+design[,2])
       design.batch2 <- rbind(design.batch[,], design.batch[,])
       design.batch2 <- design.batch2[,3]
       design.batch <- design.batch[,3]
       
       if(model=="QLF"){
-        designf <- stats::model.matrix(~factor.group*factor.type+design.batch2)
+        designf <- stats::model.matrix(~design.batch2+factor.group*factor.type)
         Exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
         Exons_dge <- edgeR::calcNormFactors(Exons_dge, method="TMM")
         Exons_dge <- edgeR::estimateDisp(Exons_dge, designf, robust=T)
@@ -182,7 +182,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         Exons_qlf <- edgeR::glmQLFTest(Exons_fit)
         Exons_results <- edgeR::topTags(Exons_qlf, n=nrow(Exons_dge))
       
-        designf2 <- stats::model.matrix(~factor.group2+design.batch)
+        designf2 <- stats::model.matrix(~design.batch+factor.group2)
         Introns_dge <- edgeR::DGEList(counts=Intronsf, genes=rownames(Intronsf))
         Introns_dge <- edgeR::calcNormFactors(Introns_dge, method="TMM")
         Introns_dge <- edgeR::estimateDisp(Introns_dge, designf2, robust=T)
@@ -190,7 +190,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         Introns_qlf <- edgeR::glmQLFTest(Introns_fit)
         Introns_results <- edgeR::topTags(Introns_qlf, n=nrow(Introns_dge))
       
-        designf3 <- stats::model.matrix(~factor.group2+design.batch)
+        designf3 <- stats::model.matrix(~design.batch+factor.group2)
         DE_dge <- edgeR::DGEList(counts=Exonsf, genes=rownames(Exonsf))
         DE_dge <- edgeR::calcNormFactors(DE_dge, method="TMM")
         DE_dge <- edgeR::estimateDisp(DE_dge, designf3, robust=T)
@@ -199,7 +199,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         DE_results <- edgeR::topTags(DE_qlf, n=nrow(DE_dge))
       
       } else if(model=="LRT"){
-        designf <- stats::model.matrix(~factor.group*factor.type+design.batch2)
+        designf <- stats::model.matrix(~design.batch2+factor.group*factor.type)
         Exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
         Exons_dge <- edgeR::calcNormFactors(Exons_dge, method="TMM")
         Exons_dge <- edgeR::estimateDisp(Exons_dge, designf, robust=T)
@@ -207,7 +207,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         Exons_lrt <- edgeR::glmLRT(Exons_fit)
         Exons_results <- edgeR::topTags(Exons_lrt, n=nrow(Exons_dge))
         
-        designf2 <- stats::model.matrix(~factor.group2+design.batch)
+        designf2 <- stats::model.matrix(~design.batch+factor.group2)
         Introns_dge <- edgeR::DGEList(counts=Intronsf, genes=rownames(Intronsf))
         Introns_dge <- edgeR::calcNormFactors(Introns_dge, method="TMM")
         Introns_dge <- edgeR::estimateDisp(Introns_dge, designf2, robust=T)
@@ -215,7 +215,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         Introns_lrt <- edgeR::glmLRT(Introns_fit)
         Introns_results <- edgeR::topTags(Introns_lrt, n=nrow(Introns_dge))
         
-        designf3 <- stats::model.matrix(~factor.group2+design.batch)
+        designf3 <- stats::model.matrix(~design.batch+factor.group2)
         DE_dge <- edgeR::DGEList(counts=Exonsf, genes=rownames(Exonsf))
         DE_dge <- edgeR::calcNormFactors(DE_dge, method="TMM")
         DE_dge <- edgeR::estimateDisp(DE_dge, designf3, robust=T)
@@ -387,13 +387,13 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
     
     if(ncol(design) == 3) {
       
-      design.batch <- stats::model.matrix(~0+design[,2]+design[,3])
+      design.batch <- stats::model.matrix(~0+design[,3]+design[,2])
       design.batch2 <- rbind(design.batch[,], design.batch[,])
       design.batch2 <- design.batch2[,3]
       design.batch <- design.batch[,3]
       
       if(model=="QLF"){
-        designf <- stats::model.matrix(~factor.group*factor.type+design.batch2)
+        designf <- stats::model.matrix(~design.batch2+factor.group*factor.type)
         Exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
         Exons_dge <- edgeR::calcNormFactors(Exons_dge, method="TMM")
         Exons_dge <- edgeR::estimateDisp(Exons_dge, designf, robust=T)
@@ -401,7 +401,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         Exons_qlf <- edgeR::glmQLFTest(Exons_fit)
         Exons_results <- edgeR::topTags(Exons_qlf, n=nrow(Exons_dge))
       
-        designf2 <- stats::model.matrix(~factor.group2+design.batch)
+        designf2 <- stats::model.matrix(~design.batch+factor.group2)
         Introns_dge <- edgeR::DGEList(counts=Intronsf, genes=rownames(Intronsf))
         Introns_dge <- edgeR::calcNormFactors(Introns_dge, method="TMM")
         Introns_dge <- edgeR::estimateDisp(Introns_dge, designf2, robust=T)
@@ -409,7 +409,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         Introns_qlf <- edgeR::glmQLFTest(Introns_fit)
         Introns_results <- edgeR::topTags(Introns_qlf, n=nrow(Introns_dge))
       
-        designf3 <- stats::model.matrix(~factor.group2+design.batch)
+        designf3 <- stats::model.matrix(~design.batch+factor.group2)
         DE_dge <- edgeR::DGEList(counts=Exonsf, genes=rownames(Exonsf))
         DE_dge <- edgeR::calcNormFactors(DE_dge, method="TMM")
         DE_dge <- edgeR::estimateDisp(DE_dge, designf3, robust=T)
@@ -418,7 +418,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         DE_results <- edgeR::topTags(DE_qlf, n=nrow(DE_dge))
       
       } else if(model=="LRT"){
-        designf <- stats::model.matrix(~factor.group*factor.type+design.batch2)
+        designf <- stats::model.matrix(~design.batch2+factor.group*factor.type)
         Exons_dge <- edgeR::DGEList(counts=merged_ei, genes=rownames(merged_ei))
         Exons_dge <- edgeR::calcNormFactors(Exons_dge, method="TMM")
         Exons_dge <- edgeR::estimateDisp(Exons_dge, designf, robust=T)
@@ -426,7 +426,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         Exons_lrt <- edgeR::glmLRT(Exons_fit)
         Exons_results <- edgeR::topTags(Exons_lrt, n=nrow(Exons_dge))
         
-        designf2 <- stats::model.matrix(~factor.group2+design.batch)
+        designf2 <- stats::model.matrix(~design.batch+factor.group2)
         Introns_dge <- edgeR::DGEList(counts=Intronsf, genes=rownames(Intronsf))
         Introns_dge <- edgeR::calcNormFactors(Introns_dge, method="TMM")
         Introns_dge <- edgeR::estimateDisp(Introns_dge, designf2, robust=T)
@@ -434,7 +434,7 @@ getEISAcompR <- function(Exons, Introns, design, model="QLF",
         Introns_lrt <- edgeR::glmLRT(Introns_fit)
         Introns_results <- edgeR::topTags(Introns_lrt, n=nrow(Introns_dge))
         
-        designf3 <- stats::model.matrix(~factor.group2+design.batch)
+        designf3 <- stats::model.matrix(~design.batch+factor.group2)
         DE_dge <- edgeR::DGEList(counts=Exonsf, genes=rownames(Exonsf))
         DE_dge <- edgeR::calcNormFactors(DE_dge, method="TMM")
         DE_dge <- edgeR::estimateDisp(DE_dge, designf3, robust=T)
