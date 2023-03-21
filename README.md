@@ -175,7 +175,7 @@ While the likelihood ratio test (LRT) is a more obvious choice for obtaining EIS
 
 ```r
 
-eisa <- getEISAcompR(Exons=exon_counts, Introns=intron_counts, design=design_matrix, filterExpr=TRUE, model="QLF", percent=0.5, cpm=1)
+eisa <- getEISAcompR(Exons=exon_counts$counts, Introns=intron_counts$counts, design=design_matrix, filterExpr=TRUE, model="QLF", percent=0.5, cpm=1)
 
 ```
 &nbsp;
