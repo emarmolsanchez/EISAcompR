@@ -15,11 +15,21 @@
 #'@name writeEISAgtfs
 #'@rdname writeEISAgtfs-writeEISAgtfs
 #'@importFrom utils write.table
+
+removeNewlines <- function(subGTF){
+  corrctedGTF <- subGTF %>%
+                 dplyr::mutate(attrb = gsub("\n", "", attrb),
+                            start = as.integer(start),
+                            end = as.integer(end)
+                          )
+   return(corrctedGTF)
+  }
+
 writeEISAgtfs <- function(eisaR.obj, out.path="~/"){
 
-  exonGTF <- eisaR.obj$exonsGTF
-  intronGTF <- eisaR.obj$intronsGTF
-
+  exonGTF <- removeNewlines(eisaR.obj$exonsGTF)
+             
+  intronGTF <- removeNewlines(eisaR.obj$intronsGTF)
 
   ## Write GTFs
   utils::write.table(exonGTF, paste0(out.path,"Exons.gtf"), quote=F,
