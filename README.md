@@ -163,7 +163,7 @@ While the likelihood ratio test (LRT) is a more obvious choice for obtaining EIS
 
 + Exonic raw counts (genes in rows and samples in columns).
 + Intronic raw counts (genes in rows and samples in columns).
-+ Design matrix (1st = sample names; 2nd = group assignment + optionally one additional column with batch effect).
++ Design matrix (1st column = sample names; 2nd column = group assignment + optionally one additional column with batch effect).
 + Boolean to perform filtering based on expression criteria to remove lowly expressed genes (TRUE/FALSE).
 + Type of test to perform for inferring significance in EISA and DE results. Quasi-likelihood F-test ("QLF") or likelihood ratio test ("LRT"). Default is QLF.
 + Percentage of samples showing minimum expression threshold for filtering (50% by default).
