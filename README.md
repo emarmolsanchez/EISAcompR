@@ -222,7 +222,7 @@ To achive this purpose, we have implemented a network-oriented filtering criteri
 + Normalized counts in log2 scale belonging to differentially expresssed genes excluding genes present in the set of interest (genes in rows and samples in columns).
 + Method to calculate pairwise correlation among genes (available methods are "pearson", "spearman" and "kendall". Spearman by default). 
 + Correlation threshold for prioritizing significant pairwise covariation events (0.6 by default).
-+ Network inference algorithm to prioritize significant covariation events (available methods are "pcit", "pvalue", "fdr". PCIT by default).
++ Network inference algorithm to prioritize significant covariation events (available methods are "pcit", "pvalue" and "fdr". PCIT by default).
 
 &nbsp;
 
